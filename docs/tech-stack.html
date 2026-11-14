@@ -1,0 +1,71 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1000px; font-family:"Microsoft YaHei","PingFang SC",sans-serif; background:#fff; padding:44px 40px 38px; color:#16324f; }
+.title { text-align:center; font-size:44px; font-weight:900; letter-spacing:2px; }
+.title .accent { color:#e8642c; }
+.subline { display:flex; align-items:center; justify-content:center; gap:14px; margin:16px 0 28px; }
+.subline .line { width:64px; height:2px; background:#16324f; position:relative; }
+.subline .line.l::before { content:''; position:absolute; left:0; top:-3px; width:8px; height:8px; border-radius:50%; background:#16324f; }
+.subline .line.r::after { content:''; position:absolute; right:0; top:-3px; width:8px; height:8px; border-radius:50%; background:#16324f; }
+.sub { font-size:20px; font-weight:700; color:#3d5a76; letter-spacing:1px; }
+.hero { width:470px; margin:0 auto; background:linear-gradient(180deg,#1d3d5f,#16324f); border-radius:22px; padding:24px 26px 22px; text-align:center; color:#fff; box-shadow:0 12px 28px rgba(22,50,79,.30); }
+.hero .icon { font-size:46px; line-height:1.1; }
+.hero h2 { font-size:23px; margin-top:6px; font-weight:800; line-height:1.4; }
+.conn { display:flex; justify-content:space-around; margin:2px 30px 4px; }
+.conn .ar { text-align:center; color:#e8642c; }
+.conn .bar { display:block; width:2px; height:24px; background:#e8642c; margin:0 auto; }
+.conn .tip { display:block; font-size:20px; font-weight:900; line-height:.9; margin-top:-2px; }
+.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px; }
+.card { border:2px solid #dbe5ec; border-radius:18px; overflow:hidden; background:#fff; box-shadow:0 4px 14px rgba(22,50,79,.07); }
+.card h3 { color:#fff; font-size:19px; padding:10px 14px; display:flex; align-items:center; gap:9px; font-weight:800; }
+.card h3 .num { flex:none; width:25px; height:25px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; }
+.card ul { list-style:none; padding:12px 14px; }
+.card li { display:flex; align-items:center; gap:9px; font-size:15.5px; padding:5.5px 0; font-weight:600; color:#3d5a76; }
+.card li .em { flex:none; width:24px; text-align:center; font-size:17px; }
+.pills { display:flex; gap:14px; margin:20px 0 16px; }
+.pill { flex:1; border-radius:999px; padding:9px 0; text-align:center; font-size:16.5px; font-weight:800; }
+.trophy { background:#fbe9df; border-radius:14px; padding:13px; text-align:center; font-size:18.5px; font-weight:800; color:#c24e1d; }
+</style></head><body>
+<div class="title">把代码安个家 <span class="accent">技术栈全景图</span></div>
+<div class="subline"><div class="line l"></div><div class="sub">互动文章站 × 五枚状态机小样 × 双仓发布管线</div><div class="line r"></div></div>
+<div class="hero"><div class="icon">⚓</div><h2>GitHub 与 Gitee 双港使用指南<br>零依赖互动单页</h2></div>
+<div class="conn"><div class="ar"><span class="bar"></span><span class="tip">▼</span></div><div class="ar"><span class="bar"></span><span class="tip">▼</span></div><div class="ar"><span class="bar"></span><span class="tip">▼</span></div></div>
+<div class="grid">
+  <div class="card"><h3 style="background:#16324f"><span class="num" style="color:#16324f">01</span>交互内核</h3><ul>
+    <li><span class="em">🧩</span>零依赖 vanilla JS</li>
+    <li><span class="em">🎰</span>5 枚确定性状态机小样</li>
+    <li><span class="em">🔒</span>握手 / 三区 / 双推 / 决策树 / 发布线</li>
+  </ul></div>
+  <div class="card"><h3 style="background:#4f88a8"><span class="num" style="color:#4f88a8">02</span>视觉系统</h3><ul>
+    <li><span class="em">🗺️</span>海图房主题（藏青 × 航标橙）</li>
+    <li><span class="em">📈</span>内联 SVG 航线图 / 经纬网格</li>
+    <li><span class="em">📱</span>移动端断点适配 + 溢出扫描</li>
+  </ul></div>
+  <div class="card"><h3 style="background:#0e9488"><span class="num" style="color:#0e9488">03</span>字体管线</h3><ul>
+    <li><span class="em">🖋️</span>LXGW WenKai 全量 TTF</li>
+    <li><span class="em">✂️</span>pyftsubset + brotli 按文子集</li>
+    <li><span class="em">📦</span>woff2 ×2 ≈ 190KB · OFL 随仓</li>
+  </ul></div>
+  <div class="card"><h3 style="background:#ea7a0c"><span class="num" style="color:#ea7a0c">04</span>验收管线</h3><ul>
+    <li><span class="em">🎭</span>Playwright + Edge 无头双视口</li>
+    <li><span class="em">📸</span>11 张交互后截图逐一目检</li>
+    <li><span class="em">🩺</span>JS 报错 / 控制台 / 横向溢出扫描</li>
+  </ul></div>
+  <div class="card"><h3 style="background:#7c3aed"><span class="num" style="color:#7c3aed">05</span>发布管线</h3><ul>
+    <li><span class="em">🔑</span>凭据管理器 → API 建仓</li>
+    <li><span class="em">🛶</span>git push · GitHub + Gitee 双港</li>
+    <li><span class="em">🚨</span>被墙兜底：Git Data API 五步</li>
+  </ul></div>
+  <div class="card"><h3 style="background:#6d28d9"><span class="num" style="color:#6d28d9">06</span>内容工程</h3><ul>
+    <li><span class="em">🧭</span>七章航段 + 四次真实走查</li>
+    <li><span class="em">📜</span>航海速查表 + 3-2-1 备份法则</li>
+    <li><span class="em">✅</span>事实核查：Gitee 配额 / Pages 现状</li>
+  </ul></div>
+</div>
+<div class="pills">
+  <div class="pill" style="background:#e3eef4;color:#16608a;border:2px solid #c4dcea">🧩 零依赖单文件页</div>
+  <div class="pill" style="background:#fbe9df;color:#c24e1d;border:2px solid #f6cdb8">🎯 确定性可回放小样</div>
+  <div class="pill" style="background:#ecfdf5;color:#047857;border:2px solid #a7f3d0">🏠 全程本机验收</div>
+</div>
+<div class="trophy">🏆 七个航段 · 五枚小样 · 四次真实走查 —— 亲手把代码安个家</div>
+</body></html>
