@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>把代码安个家 · 托管手册（GitHub 与 Gitee）</title>
-<meta name="description" content="注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——每一步拆开给你玩：五段互动全是确定性状态机，报错原文来自真实终端，走查来自真实发布现场。">
+<meta name="description" content="注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——每一步拆开给你玩：八段互动全是确定性状态机，报错原文来自真实终端，走查来自真实发布现场。">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -15,7 +15,7 @@
     <div style="font-size:13px;letter-spacing:3px;color:var(--muted)">托管手册 GIT PRIMER</div>
     <div style="font-size:12px;letter-spacing:2px;color:var(--faint);margin-top:2px">REPOS &amp; REMOTES · 2026.11 · 交互式双仓册 · 手册系列第四部</div>
     <h1>把代码<br><em>安个家</em></h1>
-    <p class="sub">注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——每一步都拆开给你玩：<b>五段互动全是确定性状态机</b>，报错原文来自真实终端，四次走查来自真实发布现场。GitHub 与 Gitee 两座服务器，一篇跑通。</p>
+    <p class="sub">注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——每一步都拆开给你玩：<b>八段互动全是确定性状态机</b>，报错原文来自真实终端，四次走查来自真实发布现场。GitHub 与 Gitee 两座服务器，一篇跑通。</p>
     <div class="route">
       <svg viewBox="0 0 1000 132" width="100%" aria-label="结构图：本机仓库 push 到两台远程服务器">
         <defs>
@@ -45,7 +45,7 @@
     </div>
     <div class="stats">
       <div class="s"><b>7 章</b><span>认证 → 提交 → 双仓 → 断网 → 发布 → 协作</span></div>
-      <div class="s"><b>5 段互动</b><span>全部确定性状态机 · 可重置重放</span></div>
+      <div class="s"><b>8 段互动</b><span>全部确定性状态机 · 可重置重放</span></div>
       <div class="s"><b>4 次走查</b><span>报错原文 · 来自真实发布现场</span></div>
       <div class="s"><b>0 依赖</b><span>单文件 · 全程真实命令</span></div>
     </div>
@@ -63,7 +63,7 @@
         <div><b style="color:var(--orange)">05</b> 断网 —— 超时、代理、镜像与 API 兜底</div>
         <div><b style="color:var(--orange)">06</b> 发布 —— Pages：三种源与半成品坑</div>
         <div><b style="color:var(--orange)">07</b> 协作 —— Issue、分支、PR 与五人的边界</div>
-        <div style="color:var(--muted)">附 —— 速查卡：如果只带走十句</div>
+        <div style="color:var(--muted)">附 —— 速查卡：如果只带走十二句</div>
       </div>
     </div>
   </div>
@@ -194,7 +194,37 @@ origin  https://gitee.com/starrysea1412/video-agent-lab.git (fetch)
   <p>很多人把 commit 想成「存了几个文件」，实际存的是三样东西：<b>blob</b>（文件内容的字节）、<b>tree</b>（目录结构，把 blob 和文件名对上）、<b>commit</b>（指向一个 tree，记录父提交、作者、时间与说明）。每样东西都有一个 <b>SHA-1 哈希</b>——40 位十六进制，内容变一位，哈希就面目全非。所以 git 的历史本质是「一串快照」，而非「文件修改记录」：回滚、分支、diff，全都是在快照之间做算术。</p>
   <p>这也解释了 commit message 该写什么——既然快照记下了「改了什么」，message 的任务是<b>「为什么」</b>。<code>修复 HUD 暗色模式对比度</code> 有信息量，<code>改了点东西</code> 没有。惯例是祈使句、首行 50 字符内（详情挪空行之后的正文，72 字符换行）——git 自家的提交历史就是按这个格式写的。</p>
 
-  <h3><span class="h3n">⚓ 3.2</span>首航全流程</h3>
+  <h3><span class="h3n">⚓ 3.2</span>对象库解剖：.git 里到底存了什么</h3>
+  <p>commit 的老家是 <code>.git/objects</code>。打开看，里面是 256 个两字符命名的抽屉（<code>00/</code> 到 <code>ff/</code>）——对象 SHA-1 的前两位当抽屉名、后 38 位当文件名。每个对象在磁盘上的原样结构是「<b>类型 + 空格 + 字节数 + NUL + 内容</b>」：一个 10 字节的 <code>hello git</code> 文件入库时，blob 的完整原文是 <code>blob 10\0hello git\n</code>——对这一整段算 SHA-1，得到的就是它的身份证号。tree 和 commit 同理，只是内容换成目录清单和提交元数据。</p>
+  <p>三条对象规则决定了 git 的一切脾气：<b>①内容寻址</b>——对象名就是内容的哈希，改一个字节，名字面目全非，所以历史改不动也赖不掉；<b>②同内容即同对象</b>——两个文件字节相同就共享同一个 blob，改了十版都没动过的 LICENSE 全程只存一份；<b>③对象只增不改</b>——新快照产生新对象，旧对象永不覆写（<code>git gc</code> 会把散对象打包成 packfile 压体积，但内容语义不变）。</p>
+  <p><b>经典追问：SHA-1 都被 Google 攻破过（2017 年 SHAttered，碰撞成本约 2<sup>63</sup>），git 为什么还敢用？</b>那场攻击是「预谋构造」——攻击者事先花 months 算出两份长得一样哈希不同的 PDF。git 面对的威胁完全不同：攻击者要在改一个字后让新内容恰好撞上 40 位十六进制的既有对象，概率 2<sup>-160</sup>，且 git 自 2017 年起内置了碰撞检测（sha1dc），收到伪造对象会当场拒收。工程上「换哈希」的成本（所有对象改名、所有引用迁移）远大于「加检测」——所以 SHA-1 至今稳坐，SHA-256 仓库作为备选格式已在路上。</p>
+
+  <div class="demo" id="d6">
+    <div class="demo-head"><span class="demo-tag">互动 02</span><span class="demo-title">对象库解剖台 · 亲手算一个 SHA-1</span><span class="demo-hint">add → 看对象怎么长出来</span></div>
+    <div class="demo-body">
+      <div class="d6-lab">
+        <div class="d6-file">
+          <div class="nm">📄 hello.txt（工作区）</div>
+          <pre id="d6-content">hello git</pre>
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn primary" id="d6-add">git add hello.txt</button>
+            <button class="btn primary" id="d6-commit">git commit</button>
+            <button class="btn" id="d6-edit">改一个字符</button>
+            <button class="btn ghost" id="d6-reset">重来</button>
+          </div>
+        </div>
+        <div class="d6-shelf">
+          <div class="nm">🗄️ .git/objects（对象货架）</div>
+          <div id="d6-objs"><div class="d6-empty">空仓库——add 一下，看第一件对象入库</div></div>
+          <div class="d6-count" id="d6-count">对象总数 0</div>
+        </div>
+      </div>
+      <div class="term" style="margin-top:12px"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git cat-file -p HEAD</span></div><pre id="d6-term"><span class="c"># commit 一下，这里出现 cat-file 的原样输出——和真 git 一字不差</span></pre></div>
+    </div>
+    <div class="demo-foot">确定性模拟，哈希是真算的：对象原文（blob 10\0 + 内容）喂给浏览器原生 SHA-1，算出的 40 位与真 git 完全一致。第三次「改一个字符」改回原文时，注意货架不会新增 blob——同内容即同对象，git 一个字节都不重存。</div>
+  </div>
+
+  <h3><span class="h3n">⚓ 3.3</span>首航全流程</h3>
   <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash · 新仓库的第一次推送</span></div><pre><span class="p">$</span> git init                          <span class="c"># 项目根目录起本地仓库（生成 .git/）</span>
 <span class="p">$</span> git add .                         <span class="c"># 全部装上暂存区（先确认 .gitignore！）</span>
 <span class="p">$</span> git commit -m "first commit"      <span class="c"># 快照入库，得到首个 SHA</span>
@@ -203,12 +233,12 @@ origin  https://gitee.com/starrysea1412/video-agent-lab.git (fetch)
 <span class="p">$</span> git push -u origin main           <span class="c"># -u 记住上游，此后 push/pull 不必再指名</span></pre></div>
   <p>之后的日常只剩三拍：<code>add → commit → push</code>。暂存区存在的意义是<b>允许分批</b>：同一个文件改了两处，<code>git add -p</code> 可以只把其中一处装进这次提交——把「一次提交 = 一个说得清的动作」变成物理上可能的事。</p>
 
-  <h3><span class="h3n">⚓ 3.3</span>开船前先写 .gitignore</h3>
+  <h3><span class="h3n">⚓ 3.4</span>开船前先写 .gitignore</h3>
   <p>不是所有文件都该进库：<b>密钥与令牌</b>（<code>.env</code>、<code>*.key</code>）——push 只要一秒，撤干净要重写全部历史（每个老快照里它都还在）；<b>依赖目录</b>（<code>node_modules/</code>、<code>venv/</code>）体积巨大，且能靠 lock 文件复原；<b>构建产物</b>（<code>dist/</code>、<code>__pycache__/</code>）随时可再生。库里只收藏「源」。</p>
   <p><b>经典追问：为什么 .gitignore 对已跟踪的文件无效？</b>因为 ignore 规则只作用于「还未被跟踪」文件的枚举阶段——已被 add 过的文件在索引里有正式户口，状态检查根本不会去对照 ignore 名单。解法是先撤销户口再补规则：<code>git rm --cached 秘密.env</code>（从索引删除、保留工作区文件），提交后 ignore 才开始管它。<b>顺序反了等于白写。</b></p>
 
   <div class="demo" id="d2">
-    <div class="demo-head"><span class="demo-tag">互动 02</span><span class="demo-title">三区流水线 · 亲手送一次提交出门</span><span class="demo-hint">点选文件 → add → commit → push</span></div>
+    <div class="demo-head"><span class="demo-tag">互动 03</span><span class="demo-title">三区流水线 · 亲手送一次提交出门</span><span class="demo-hint">点选文件 → add → commit → push</span></div>
     <div class="demo-body">
       <div class="d2-lanes">
         <div class="d2-lane" id="d2-wt"><h4>工作区<span class="en">working dir</span></h4><div id="d2-wt-files"></div></div>
@@ -230,6 +260,41 @@ origin  https://gitee.com/starrysea1412/video-agent-lab.git (fetch)
   </div>
 </section>
 
+  <h3><span class="h3n">⚓ 3.5</span>后悔药：reset 三档与 reflog</h3>
+  <p>提交错了、改砸了，是 git 使用者的日常。后悔药有两瓶：<code>git reset</code> 拆提交，<code>git revert</code> 反着再提交一份。reset 有三档，差异全在「动哪几个区」——这是新手事故率最高的一条命令：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>命令（起点：HEAD 已提交 v2，暂存区有 v3）</th><th>HEAD</th><th>暂存区</th><th>工作区</th><th>后果</th></tr></thead>
+    <tbody>
+      <tr><td><code>git reset --soft HEAD~1</code></td><td>→ v1</td><td class="good">不动</td><td class="good">不动</td><td>v2 的改动整体退回暂存区，换个说法重提</td></tr>
+      <tr><td><code>git reset --mixed HEAD~1</code>（默认档）</td><td>→ v1</td><td class="warn">重置为 v1</td><td class="good">不动</td><td>改动退回工作区变成未暂存，重新挑选</td></tr>
+      <tr><td><code>git reset --hard HEAD~1</code></td><td>→ v1</td><td class="bad">重置为 v1</td><td class="bad">重置为 v1</td><td>未提交的 v3 改动当场蒸发——慎用</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>经典追问：--hard 之后，数据真丢了吗？</b>分两种。已经 <code>add</code> 过的内容：blob 早已写进 <code>.git/objects</code>，reset 只是让引用不再指向它——<code>git fsck --lost-found</code> 能把悬空对象捞回来，<code>git gc</code> 默认对可达性过期对象留 2 周、松散对象 30～90 天（<code>gc.reflogExpire</code> 90 天 / <code>gc.reflogExpireUnreachable</code> 30 天）才真正清理。从没 add 过的：只存在于工作区的字节，git 从没见过它——真没了。一句话，<b>git 只会丢「你从没让它记过的东西」</b>。所以事故现场的第一反应不是慌，是 <code>git reflog</code>：HEAD 的每一次移动（reset、checkout、rebase）都有登机记录，<code>git reset --hard HEAD@{2}</code> 就能回到任何一站。</p>
+  <p>还要立一条纪律：<b>reset 改写历史，只许对没 push 过的提交用</b>。push 之后的分支上，改写等于把历史抽走一节——协作者那边的分支跟它分叉，谁也合不上。公共分支上的后悔药是 <code>git revert</code>：不改历史，加一个「反向提交」把坏改动抵消掉，历史完整，人人能对账。</p>
+
+  <div class="demo" id="d7">
+    <div class="demo-head"><span class="demo-tag">互动 04</span><span class="demo-title">后悔药台 · 三档 reset 各退到哪一格</span><span class="demo-hint">起点固定：HEAD=v2，v3 已暂存</span></div>
+    <div class="demo-body">
+      <div class="d7-zones">
+        <div class="d7-zone" id="d7-head"><h4>HEAD<span class="en">提交指针</span></h4><div class="v" id="d7-head-v">v2</div><div class="d" id="d7-head-d">hello git</div></div>
+        <div class="d7-zone" id="d7-ix"><h4>暂存区<span class="en">index</span></h4><div class="v" id="d7-ix-v">v3</div><div class="d" id="d7-ix-d">hello git!!</div></div>
+        <div class="d7-zone" id="d7-wt"><h4>工作区<span class="en">working dir</span></h4><div class="v" id="d7-wt-v">v3</div><div class="d" id="d7-wt-d">hello git!!</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" id="d7-soft">git reset --soft HEAD~1</button>
+        <button class="btn primary" id="d7-mixed">git reset --mixed HEAD~1</button>
+        <button class="btn" id="d7-hard">git reset --hard HEAD~1</button>
+        <button class="btn" id="d7-reflog">git reflog</button>
+        <button class="btn ghost" id="d7-reset">复原起点</button>
+      </div>
+      <div class="term" style="margin-top:12px"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash · status --short 等价输出</span></div><pre id="d7-term"><span class="c"># 起点：v1 → v2 两个提交；改出 v3（hello git!!）并已 add。现在后悔了。</span></pre></div>
+    </div>
+    <div class="demo-foot">确定性模拟：三格对应三区，每档 reset 的移动严格遵守语义表。--hard 后留意终端的彩蛋行——v3 的 blob 仍躺在对象库里，gc 之前 fsck --lost-found 能捞回；但 reflog 是最后一道保险，90 天后 gc 真的会清。</div>
+  </div>
+
+</section>
+
 <div class="meridian"><span>· 第三章 完 ·</span></div>
 
 <!-- ================= 第四章 ================= -->
@@ -247,7 +312,7 @@ origin  https://gitee.com/starrysea1412/video-agent-lab.git (fetch)
 origin  git@github.com:you/repo.git (fetch)
 origin  git@github.com:you/repo.git (push)
 origin  git@gitee.com:you/repo.git (push)      <span class="c"># ← 一次 push，逐条推送</span></pre></div>
-  <p>两个必须说透的细节。<b>其一</b>：一旦手动追加过 push 地址，fetch 就只认第一个 URL——想从 Gitee 拉，另开一条 <code>git remote add gitee git@gitee.com:you/repo.git</code>，平时 <code>git fetch gitee</code>。<b>其二</b>：多条 push 地址是<b>串行执行</b>的——第一条（GitHub）卡 20 秒超时，第二条（Gitee）也得干等；任何一条失败，这条 push 命令整体报错。所以「断网时双推还能救 Gitee」是错觉——要推 Gitee，就单独 <code>git push gitee main</code>。互动 03 的断网开关，复现的就是这件事。</p>
+  <p>两个必须说透的细节。<b>其一</b>：一旦手动追加过 push 地址，fetch 就只认第一个 URL——想从 Gitee 拉，另开一条 <code>git remote add gitee git@gitee.com:you/repo.git</code>，平时 <code>git fetch gitee</code>。<b>其二</b>：多条 push 地址是<b>串行执行</b>的——第一条（GitHub）卡 20 秒超时，第二条（Gitee）也得干等；任何一条失败，这条 push 命令整体报错。所以「断网时双推还能救 Gitee」是错觉——要推 Gitee，就单独 <code>git push gitee main</code>。互动 05 的断网开关，复现的就是这件事。</p>
 
   <h3><span class="h3n">⚓ 4.3</span>经典追问：双仓会自动同步吗？</h3>
   <p>不会。push 是人发起的动作，Gitee 导入仓的「强制同步」也是按钮不是定时器。真要自动，办法有两个：GitHub Actions 里跑一个镜像工作流（每次 push 到 main 后追加推送到 Gitee，用 secrets 存密钥），或者干脆维持「本地一次 push、两台服务器各收一份」的手动纪律。个人项目用后者足够——<b>自动化的复杂度应该买在刀刃上</b>。</p>
@@ -266,7 +331,7 @@ origin  git@gitee.com:you/repo.git (push)      <span class="c"># ← 一次 push
   </div>
 
   <div class="demo" id="d3">
-    <div class="demo-head"><span class="demo-tag">互动 03</span><span class="demo-title">双仓调度台 · 断网的下午</span><span class="demo-hint">先双推一次，再开断网开关单推 GitHub</span></div>
+    <div class="demo-head"><span class="demo-tag">互动 05</span><span class="demo-title">双仓调度台 · 断网的下午</span><span class="demo-hint">先双推一次，再开断网开关单推 GitHub</span></div>
     <div class="demo-body">
       <div class="btn-row" style="margin-bottom:14px">
         <button class="btn primary" id="d3-push-gh">push → GitHub</button>
@@ -337,7 +402,7 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
   <p>还有一类「连不上」根本不是你的问题：平台自己故障。<b>发布前一切失败，先花十秒开 <a href="https://www.githubstatus.com" target="_blank" rel="noopener">githubstatus.com</a></b>——某次发布撞上 Pages 官方事件，排查了半天自己的仓库，最后发现是灯塔自己着火了。看一眼状态页，省一小时怀疑人生。</p>
 
   <div class="demo" id="d4">
-    <div class="demo-head"><span class="demo-tag">互动 04</span><span class="demo-title">排障决策树 · 四种最常见报错的排查路径</span><span class="demo-hint">选一个症状，跟着走</span></div>
+    <div class="demo-head"><span class="demo-tag">互动 06</span><span class="demo-title">排障决策树 · 四种最常见报错的排查路径</span><span class="demo-hint">选一个症状，跟着走</span></div>
     <div class="demo-body">
       <div class="d4-pick" id="d4-pick"></div>
       <div class="d4-flow" id="d4-flow"></div>
@@ -359,7 +424,7 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
   <p>免费额度是软限但要知道：站点 1GB、月带宽 100GB、每小时构建 10 次。正规文档站都远摸不到；被限流了再考虑加 CDN。</p>
 
   <div class="demo" id="d5">
-    <div class="demo-head"><span class="demo-tag">互动 05</span><span class="demo-title">发布流水线 · 别在传输没走完时开 Pages</span><span class="demo-hint">先抢跑一次，看 404 怎么发生</span></div>
+    <div class="demo-head"><span class="demo-tag">互动 07</span><span class="demo-title">发布流水线 · 别在传输没走完时开 Pages</span><span class="demo-hint">先抢跑一次，看 404 怎么发生</span></div>
     <div class="demo-body">
       <div class="d5-line">
         <div class="d5-st" id="d5-s1"><span class="ic">📦</span><div class="t">本地<br>index.html</div><span class="led"></span></div>
@@ -405,7 +470,31 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
   <p>团队节奏的默认值：主干 <code>main</code> 永远可用；任何改动开一条短命分支（<code>feat/hud-console</code>、<code>fix/login-timeout</code>），改完发 Pull Request（GitLab 叫 MR，GitLab 之外都叫 PR，是同一件事）——「请求把这条分支并回主干」。合并前有人看一眼（review），CI 跑一遍测试，绿了才合。<b>经典追问：fork 和 clone 差在哪？</b>clone 是把仓库复制到本地，归属不变；fork 是<b>在服务端复制一份到你名下</b>——你拥有这份拷贝的写权限，改完向原仓库发 PR。给别人的项目贡献代码，走 fork 流；在公司仓库里干活，直接开分支（你有那台仓库的权限）。</p>
   <p>给开源项目提 PR 的礼数：先读 CONTRIBUTING.md（没有就照着最近合并的 PR 依样画葫芦），一个 PR 只做一件事，改动说明里贴 before/after。公开仓库可以免费配分支保护（要求 review、要求 CI 通过才能合）——给主干上的 <code>main</code> 上一道闸。</p>
 
-  <h3><span class="h3n">⚓ 7.3</span>开源还是私有</h3>
+  <h3><span class="h3n">⚓ 7.3</span>PR 的生命周期：一道闸门的完整流程</h3>
+  <p>一个 PR 从开到合走五站：<b>open</b>（分支已推、PR 已建，CI 开始跑）→ <b>review</b>（三种表态：<code>Approve</code> 放行、<code>Request changes</code> 打回改、<code>Comment</code> 只留言不挡道）→ <b>CI 绿</b>（自动化测试通过）→ <b>merge</b>（三种合法：<code>merge commit</code> 保留分叉史、<code>squash</code> 压成一个提交、<code>rebase</code> 拉直贴上去）→ <b>delete branch</b>（分支用完即弃，主干永远整洁）。任何一站红掉，PR 就停在原地等改——这不是官僚流程，是把「主干永远能跑」翻译成机器可执行的规则。</p>
+  <p>机器可执行的开关叫<b>分支保护</b>（Settings → Branches）：勾上 <code>Require a pull request before merging</code>、要求至少 1 个 approve、要求 status check 通过、禁止 force push——之后任何人（包括仓库主人）都绕不过 review 直接 push main。<b>经典追问：为什么不让大家直接 push main，非要多一道闸？</b>因为主干是全队的下游：一个没跑过测试的红提交混进 main，所有人的 pull 都带着它，CI 全红、发布冻结，排查成本是全队的时间；而闸门的成本只是 reviewer 一次点击。事故概率 × 事故代价，远大于每次点击的成本——这道闸是 git 协作里性价比最高的一笔交易。冲突也不会因为闸门消失：两人改了同一行，后合的 PR 会标 <b>conflict</b>，解法永远是「把 main 拉进自己的分支（merge 或 rebase），手工裁决同一行，重新 push」。</p>
+
+  <div class="demo" id="d8">
+    <div class="demo-head"><span class="demo-tag">互动 08</span><span class="demo-title">PR 生命周期台 · 从开分支到 merge</span><span class="demo-hint">走一遍五站 · 试试打回和冲突</span></div>
+    <div class="demo-body">
+      <div class="stage" style="background:var(--sea-soft);border:1.5px solid var(--line-strong);border-radius:12px;padding:8px"><svg id="d8-svg" viewBox="0 0 900 190" role="img" aria-label="分支图：main 与 feat 分支"></svg></div>
+      <div class="d8-badge" id="d8-badge">还没有 PR</div>
+      <div class="btn-row">
+        <button class="btn primary" id="d8-branch">git switch -c feat/hud</button>
+        <button class="btn primary" id="d8-push">git push -u origin feat/hud</button>
+        <button class="btn primary" id="d8-open">开 Pull Request</button>
+        <button class="btn" id="d8-approve">review: Approve</button>
+        <button class="btn" id="d8-request">review: Request changes</button>
+        <button class="btn" id="d8-merge">Merge pull request</button>
+        <label class="toggle"><input type="checkbox" id="d8-drift"><span class="tk"></span>main 期间又进了新提交（改同一行）</label>
+        <button class="btn ghost" id="d8-reset">重来</button>
+      </div>
+      <div class="term" style="margin-top:12px"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">PR 时间线</span></div><pre id="d8-term"><span class="c"># 按顺序点：开分支 → push → 开 PR →（CI 自动跑）→ Approve → Merge</span></pre></div>
+    </div>
+    <div class="demo-foot">确定性状态机：CI 在开 PR 后自动跑 2.4s（黄→绿）；Request changes 把 PR 打回 open（改完可再走 review）；勾上「main 又进了新提交」再 merge 会撞 conflict——终端给出与真 git 一致的解法提示。三种 merge 策略的差异见本章 7.2 的 squash 说明。</div>
+  </div>
+
+  <h3><span class="h3n">⚓ 7.4</span>开源还是私有</h3>
   <div class="tbl-wrap"><table class="tbl">
     <thead><tr><th></th><th>开源仓库</th><th>私有仓库</th></tr></thead>
     <tbody>
@@ -422,7 +511,7 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
 
 <!-- ================= 速查卡 ================= -->
 <section class="chapter" id="cheat">
-  <div class="ch-head"><span class="ch-no">附录</span><h2>速查卡：如果只带走十句</h2></div>
+  <div class="ch-head"><span class="ch-no">附录</span><h2>速查卡：如果只带走十二句</h2></div>
   <p class="ch-lead">贴在手边的那一页。每句都是前面七章的浓缩，展开版见各章。</p>
   <div class="card" style="padding:8px 26px">
     <div style="display:grid;grid-template-columns:1fr;gap:2px;font-size:16px;line-height:1.9">
@@ -436,6 +525,8 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
       <div><b style="color:var(--orange)">⑧</b> 代理是双向坑：没挂上会超时，忘摘掉也超时——报错里出现 127.0.0.1 就是后一种。</div>
       <div><b style="color:var(--orange)">⑨</b> Pages 404 按序查四步：官方状态页 → push 完没 → 构建绿没 → 强刷缓存。</div>
       <div><b style="color:var(--orange)">⑩</b> 重要数据 3 份、2 种介质、1 份异地——双仓就是成本最低的那份异地。</div>
+      <div><b style="color:var(--orange)">⑪</b> commit 存的是三层对象：blob 内容、tree 目录、commit 快照——内容变一位 SHA-1 全变，历史赖不掉也改不动。</div>
+      <div><b style="color:var(--orange)">⑫</b> reset --hard 不是坟场——add 过的 blob 还在对象库里，reflog 90 天内都捞得回；公共分支后悔用 revert，别改写历史。</div>
     </div>
   </div>
 </section>
@@ -452,7 +543,7 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
 
 <footer class="site">
   <div class="line">托管手册 · 把代码安个家（GitHub 与 Gitee）</div>
-  <div class="line">七章 · 五段互动 · 四次走查 · 单文件 · 零依赖</div>
+  <div class="line">七章 · 八段互动 · 四次走查 · 单文件 · 零依赖</div>
   <div class="line">交互确定性模拟 · 海图 / 2026 · StarrySea1412</div>
 </footer>
 

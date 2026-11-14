@@ -404,5 +404,271 @@
       paint();
     });
     paint();
+
+  /* ============ 小样 6 · 对象库解剖台 ============ */
+  (function d6() {
+    var V1 = "hello git\n", V2 = "hello git!\n";
+    var enc = new TextEncoder();
+    var content = V1, stagedHex = null, stagedSize = 0, head = null, chain = [];
+    var objs = {};   /* hex -> {type, size, card} */
+    var order = [];
+    var shelf = $("#d6-objs"), term = $("#d6-term"), countEl = $("#d6-count");
+    var toHex = function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+        return ("0" + b.toString(16)).slice(-2);
+      }).join("");
+    };
+    var cat = function (a, b) { var all = new Uint8Array(a.length + b.length); all.set(a); all.set(b, a.length); return all; };
+    var NUL = String.fromCharCode(0);
+    var sha1 = async function (bytes) { return toHex(await crypto.subtle.digest("SHA-1", bytes)); };
+    var hexBytes = function (hex) {
+      var out = new Uint8Array(hex.length / 2);
+      for (var i = 0; i < out.length; i++) out[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+      return out;
+    };
+    function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+    function card(type, hex, size) {
+      if (objs[hex]) return objs[hex];
+      var div = document.createElement("div");
+      div.className = "d6-obj t-" + type;
+      div.innerHTML = '<span class="ty">' + type + '</span><code>' + hex.slice(0, 10) + '…</code><span class="sz">' + size + 'B</span>';
+      shelf.querySelector(".d6-empty") && shelf.querySelector(".d6-empty").remove();
+      shelf.appendChild(div);
+      objs[hex] = { type: type, size: size };
+      order.push(hex);
+      countEl.textContent = "对象总数 " + order.length;
+      return null;
+    }
+    async function addObject(bodyText) {
+      var body = enc.encode(bodyText);
+      var raw = cat(enc.encode("blob " + body.length + NUL), body);
+      var hex = await sha1(raw);
+      var reused = card("blob", hex, body.length);
+      return { hex: hex, reused: !!reused, size: body.length };
+    }
+    async function commitIt() {
+      if (!stagedHex) { termLine(term, '<span class="e">nothing staged —— 先 git add</span>'); return; }
+      var n = chain.length + 1;
+      var treeBody = cat(enc.encode("100644 hello.txt" + NUL), hexBytes(stagedHex));
+      var treeRaw = cat(enc.encode("tree " + treeBody.length + NUL), treeBody);
+      var treeHex = await sha1(treeRaw);
+      card("tree", treeHex, treeBody.length);
+      var meta = "author StarrySea1412 <you@example.com> 1752500000 +0800\ncommitter StarrySea1412 <you@example.com> 1752500000 +0800";
+      var msg = (["first commit", "second commit", "third commit", "fourth commit"])[n - 1] || "commit #" + n;
+      var bodyStr = "tree " + treeHex + "\n" + (head ? "parent " + head + "\n" : "") + meta + "\n\n" + msg + "\n";
+      var body = enc.encode(bodyStr);
+      var raw = cat(enc.encode("commit " + body.length + NUL), body);
+      var hex = await sha1(raw);
+      card("commit", hex, body.length);
+      head = hex; chain.push({ hex: hex, tree: treeHex, msg: msg, body: bodyStr });
+      stagedHex = null;
+      term.innerHTML = "";
+      termLine(term, '<span class="c">$ git cat-file -p HEAD</span>');
+      termLine(term, esc(bodyStr).split("\n").join("<br>"));
+    }
+    $("#d6-add").addEventListener("click", async function () {
+      var r = await addObject(content);
+      stagedHex = r.hex; stagedSize = r.size;
+      term.innerHTML = "";
+      termLine(term, '<span class="c">$ echo -n ' + JSON.stringify(content.trim()) + ' | git hash-object --stdin</span>');
+      termLine(term, (r.reused ? '<span class="ok">✔ 该内容早已入库（同内容即同对象），blob 复用 </span>' : "blob " + r.size + String.fromCharCode(0) + esc(content.trim()) + " …") + " → " + r.hex);
+      if (r.reused) termLine(term, '<span class="c"># 货架没有新卡——一个字节都不用重存，这就是 blob 去重</span>');
+    });
+    $("#d6-commit").addEventListener("click", function () { commitIt(); });
+    $("#d6-edit").addEventListener("click", function () {
+      content = content === V1 ? V2 : V1;
+      $("#d6-content").textContent = content.trim();
+      $("#d6-edit").textContent = content === V1 ? "改一个字符（去掉 !）" : "改一个字符（加 !）";
+    });
+    $("#d6-reset").addEventListener("click", function () {
+      content = V1; stagedHex = null; head = null; chain = []; objs = {}; order = [];
+      $("#d6-content").textContent = "hello git"; $("#d6-edit").textContent = "改一个字符";
+      shelf.innerHTML = '<div class="d6-empty">空仓库——add 一下，看第一件对象入库</div>';
+      countEl.textContent = "对象总数 0";
+      term.innerHTML = '<span class="c"># commit 一下，这里出现 cat-file 的原样输出——和真 git 一字不差</span>';
+    });
+  })();
+
+  /* ============ 小样 7 · 后悔药台 ============ */
+  (function d7() {
+    var term = $("#d7-term"), log = [];
+    var START = { head: "v2", ix: "v3", wt: "v3" };
+    var TXT = { v1: "hello git", v2: "hello git!", v3: "hello git!!" };
+    var cur, reflog = [];
+    function paint() {
+      $("#d7-head-v").textContent = cur.head; $("#d7-head-d").textContent = TXT[cur.head];
+      $("#d7-ix-v").textContent = cur.ix; $("#d7-ix-d").textContent = TXT[cur.ix];
+      $("#d7-wt-v").textContent = cur.wt; $("#d7-wt-d").textContent = TXT[cur.wt];
+      $("#d7-ix").className = "d7-zone" + (cur.ix === "v3" ? " hot" : "");
+      $("#d7-wt").className = "d7-zone" + (cur.wt === "v3" ? " hot" : "");
+      $("#d7-head").className = "d7-zone" + (cur.head === "v1" ? " gone" : "");
+    }
+    function statusLine(mode) {
+      /* status --short 等价：首列=暂存区，次列=工作区 */
+      var head1 = cur.head === "v1" ? "v1" : "v2";
+      if (cur.ix === cur.wt && cur.ix === head1) return "（干净）";
+      var staged = cur.ix !== head1 ? "M  hello.txt（staged）" : "";
+      var unst = cur.wt !== cur.ix ? " M hello.txt（unstaged）" : "";
+      if (staged && unst) return "MM hello.txt —— 暂存区与工作区各有一份改动";
+      return staged || unst || "（干净）";
+    }
+    function doReset(mode) {
+      cur.head = "v1";
+      if (mode === "mixed" || mode === "hard") cur.ix = "v1";
+      if (mode === "hard") cur.wt = "v1";
+      reflog.unshift("HEAD@{" + reflog.length + "}: reset: moving to HEAD~1（--" + mode + "）");
+      term.innerHTML = "";
+      termLine(term, '<span class="c">$ git reset --' + mode + ' HEAD~1</span>');
+      termLine(term, "HEAD is now at 9c41f02… v1");
+      termLine(term, '<span class="c">$ git status --short</span>');
+      termLine(term, statusLine(mode));
+      if (mode === "hard") {
+        termLine(term, '<span class="e">✕ 工作区的 v3 被抹掉</span> <span class="c">——但别慌，看下面的彩蛋：</span>');
+        termLine(term, '<span class="c"># v3 已经 add 过，blob 仍躺在 .git/objects 里；gc 之前 git fsck --lost-found 捞得回</span>');
+      }
+      if (mode === "soft") termLine(term, '<span class="ok">✔ v2+v3 的改动整体回到暂存区——换个 message 重提即可</span>');
+      if (mode === "mixed") termLine(term, '<span class="ok">✔ 改动退回工作区变成未暂存——重新挑着 add</span>');
+      paint();
+    }
+    $("#d7-soft").addEventListener("click", function () { doReset("soft"); });
+    $("#d7-mixed").addEventListener("click", function () { doReset("mixed"); });
+    $("#d7-hard").addEventListener("click", function () { doReset("hard"); });
+    $("#d7-reflog").addEventListener("click", function () {
+      term.innerHTML = "";
+      termLine(term, '<span class="c">$ git reflog</span>');
+      if (!reflog.length) termLine(term, "HEAD@{0}: commit: v2  <span class='c'>（还没动过——三档随便按一个试试）</span>");
+      reflog.forEach(function (l) { termLine(term, l); });
+      termLine(term, '<span class="c"># reflog 是 HEAD 的登机记录，默认留 90 天——git reset --hard HEAD@{n} 回到任何一站</span>');
+    });
+    $("#d7-reset").addEventListener("click", function () {
+      cur = { head: START.head, ix: START.ix, wt: START.wt };
+      reflog = [];
+      term.innerHTML = '<span class="c"># 起点：v1 → v2 两个提交；改出 v3（hello git!!）并已 add。现在后悔了。</span>';
+      paint();
+    });
+    $("#d7-reset").click();
+  })();
+
+  /* ============ 小样 8 · PR 生命周期台 ============ */
+  (function d8() {
+    var term = $("#d8-term"), svg = $("#d8-svg"), badge = $("#d8-badge");
+    var NS8 = "http://www.w3.org/2000/svg";
+    var S = { step: 0, ci: "none", review: "none", merged: false, conflict: false, drift: false };
+    /* step: 0 无 → 1 已开分支 → 2 已推 → 3 PR open → 4 可 merge（review 过） → 5 merged */
+    function mline(x1, y1, x2, y2, cls, dash) {
+      var l = document.createElementNS(NS8, "line");
+      l.setAttribute("x1", x1); l.setAttribute("y1", y1); l.setAttribute("x2", x2); l.setAttribute("y2", y2);
+      l.setAttribute("stroke", cls); l.setAttribute("stroke-width", 2.5);
+      if (dash) l.setAttribute("stroke-dasharray", dash);
+      svg.appendChild(l); return l;
+    }
+    function node(x, y, color, lbl) {
+      var c = document.createElementNS(NS8, "circle");
+      c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 9);
+      c.setAttribute("fill", color); c.setAttribute("stroke", "#16324f"); c.setAttribute("stroke-width", 2);
+      svg.appendChild(c);
+      if (lbl) {
+        var t = document.createElementNS(NS8, "text");
+        t.setAttribute("x", x); t.setAttribute("y", y + 26); t.setAttribute("text-anchor", "middle");
+        t.setAttribute("font-size", 11); t.setAttribute("fill", "#6f8aa1"); t.textContent = lbl;
+        svg.appendChild(t);
+      }
+      return c;
+    }
+    function label(x, y, txt, color, size, weight) {
+      var t = document.createElementNS(NS8, "text");
+      t.setAttribute("x", x); t.setAttribute("y", y); t.setAttribute("font-size", size || 13);
+      t.setAttribute("fill", color || "#16324f"); t.setAttribute("font-weight", weight || 700);
+      t.textContent = txt; svg.appendChild(t); return t;
+    }
+    function paint() {
+      svg.innerHTML = "";
+      label(30, 64, "main", "#16324f");
+      mline(60, 60, 820, 60, "#4f88a8");
+      node(110, 60, "#4f88a8", "C1"); node(260, 60, "#4f88a8", "C2"); node(410, 60, "#4f88a8", "C3");
+      if (S.drift && S.step >= 3) {
+        mline(410, 60, 520, 60, "#4f88a8");
+        node(520, 60, "#c2483a", "main 新提交·改同一行");
+      }
+      var featX = S.drift && S.step >= 3 ? 560 : 520;
+      if (S.step >= 1) {
+        label(30, 134, "feat/hud", "#e8642c");
+        mline(410, 60, 500, 130, "#e8642c", "4 4");
+        mline(500, 130, 700, 130, "#e8642c");
+        node(540, 130, "#e8642c", "C4");
+        if (S.step >= 2) node(660, 130, "#e8642c", "push → origin");
+      }
+      if (S.merged) {
+        mline(700, 130, 790, 66, "#3f8f5f");
+        node(800, 60, "#3f8f5f", "merge commit");
+        label(735, 150, "分支已删 ✓", "#3f8f5f", 11, 400);
+      }
+      if (S.conflict) label(410, 175, "⚠ feat/hud 与 main 在 hud.css 同一行各有一版——后合的 PR 撞 conflict", "#c2483a", 12, 600);
+    }
+    function setBadge(txt, cls) {
+      badge.textContent = txt;
+      badge.className = "d8-badge " + (cls || "");
+    }
+    function say(html) { termLine(term, html); }
+    function refresh() {
+      paint();
+      $("#d8-branch").disabled = S.step !== 0;
+      $("#d8-push").disabled = S.step !== 1;
+      $("#d8-open").disabled = S.step !== 2;
+      $("#d8-approve").disabled = !(S.step >= 3 && !S.merged && S.review !== "approved");
+      $("#d8-request").disabled = !(S.step >= 3 && !S.merged);
+      $("#d8-merge").disabled = !(S.step >= 3 && !S.merged);
+      var st = [];
+      if (S.step >= 3 && !S.merged) {
+        st.push("CI " + (S.ci === "green" ? "✔ 绿" : S.ci === "running" ? "⏳ 跑着" : "—"));
+        st.push("review " + (S.review === "approved" ? "✔ approved" : S.review === "changes" ? "✕ changes requested" : "未审"));
+        setBadge((S.conflict ? "CONFLICT · " : "PR #1 · open · ") + st.join(" · "), S.conflict ? "bad" : S.ci === "green" && S.review === "approved" && !S.conflict ? "good" : "");
+      } else if (S.merged) setBadge("PR #1 · MERGED ✓（squash 也行——三种 merge 策略见 7.2）", "good");
+      else setBadge(S.step === 2 ? "分支已推上 origin——可以开 PR 了" : S.step === 1 ? "feat/hud 已创建" : "还没有 PR", "");
+    }
+    function runCI() {
+      S.ci = "running"; refresh();
+      setTimeout(function () { S.ci = "green"; say('<span class="ok">✔ CI：42 tests passed（2.4s）——status check 绿了</span>'); refresh(); }, 2400);
+      say('<span class="c">⏳ CI 开跑：Actions 排队 → 装依赖 → 42 个测试……</span>');
+    }
+    $("#d8-branch").addEventListener("click", function () {
+      S.step = 1; say('<span class="c">$ git switch -c feat/hud</span>'); say("Switched to a new branch 'feat/hud'"); refresh();
+    });
+    $("#d8-push").addEventListener("click", function () {
+      S.step = 2; say('<span class="c">$ git push -u origin feat/hud</span>'); say(' * [new branch]  feat/hud → feat/hud'); refresh();
+    });
+    $("#d8-open").addEventListener("click", function () {
+      S.step = 3; say('<span class="c">$ gh pr create --fill</span>'); say("PR #1: feat/hud → main（1 commit）"); runCI(); refresh();
+    });
+    $("#d8-approve").addEventListener("click", function () {
+      S.review = "approved"; say('<span class="ok">✔ reviewer approve：「C4 的实现比我想的干净」</span>'); refresh();
+    });
+    $("#d8-request").addEventListener("click", function () {
+      S.review = "changes"; say('<span class="e">✕ reviewer request changes：「这一行硬编码了 42，提出来当常量」</span>'); refresh();
+    });
+    $("#d8-merge").addEventListener("click", function () {
+      if (S.ci !== "green") { say('<span class="e">✕ branch protection：status check 未过，合不了（CI 还在跑或没跑）</span>'); return; }
+      if (S.review !== "approved") { say('<span class="e">✕ branch protection：需要至少 1 个 approve（先点 review）</span>'); return; }
+      if (S.drift && !S.conflict && !S.resolved) {
+        S.conflict = true; refresh();
+        say('<span class="e">$ git merge main</span>');
+        say('<span class="e">CONFLICT (content): Merge conflict in hud.css</span>');
+        say('<span class="c"># main 期间有人改了同一行——后合的撞车。解法：把 main 拉进分支 → 手工裁决 <<< === >>> → git add → push</span>');
+        say('<span class="c"># 解完点「Merge」会先重跑 CI；approve 依然有效</span>');
+        return;
+      }
+      if (S.conflict && !S.resolved) { S.resolved = true; say('<span class="c">$ git merge main && 修同一行 && git add hud.css && git push</span>'); runCI(); refresh(); return; }
+      S.merged = true; refresh();
+      say('<span class="c">$ git merge --no-ff feat/hud</span>');
+      say('<span class="ok">✔ Merge pull request #1 —— main 长出 merge commit，feat/hud 删除</span>');
+    });
+    $("#d8-reset").addEventListener("click", function () {
+      S = { step: 0, ci: "none", review: "none", merged: false, conflict: false, drift: $("#d8-drift").checked, resolved: false };
+      term.innerHTML = '<span class="c"># 按顺序点：开分支 → push → 开 PR →（CI 自动跑）→ Approve → Merge</span>';
+      refresh();
+    });
+    $("#d8-drift").addEventListener("change", function () { S.drift = $("#d8-drift").checked; refresh(); });
+    $("#d8-reset").click();
+  })();
   })();
 })();
