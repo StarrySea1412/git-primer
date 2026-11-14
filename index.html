@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>把代码安个家 · 托管手册（GitHub 与 Gitee）</title>
-<meta name="description" content="注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——每一步拆开给你玩：八段互动全是确定性状态机，报错原文来自真实终端，走查来自真实发布现场。">
+<title>把代码安个家 · 造物手记 VOL.14（GitHub 与 Gitee）</title>
+<meta name="description" content="造物手记 VOL.14：注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——每一步拆开给你玩：八段互动全是确定性状态机，报错原文来自真实终端，走查来自真实发布现场。">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -12,8 +12,8 @@
 
 <header class="hero">
   <div class="wrap">
-    <div style="font-size:13px;letter-spacing:3px;color:var(--muted)">托管手册 GIT PRIMER</div>
-    <div style="font-size:12px;letter-spacing:2px;color:var(--faint);margin-top:2px">REPOS &amp; REMOTES · 2026.11 · 交互式双仓册 · 手册系列第四部</div>
+    <div style="font-size:13px;letter-spacing:3px;color:var(--muted)">造物手记 VOL.14</div>
+    <div style="font-size:12px;letter-spacing:2px;color:var(--faint);margin-top:2px">REPOS &amp; REMOTES · 2026.11 · 交互式双仓篇 · 造物手记第十四篇</div>
     <h1>把代码<br><em>安个家</em></h1>
     <p class="sub">注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——每一步都拆开给你玩：<b>八段互动全是确定性状态机</b>，报错原文来自真实终端，四次走查来自真实发布现场。GitHub 与 Gitee 两座服务器，一篇跑通。</p>
     <div class="route">
@@ -50,7 +50,7 @@
       <div class="s"><b>0 依赖</b><span>单文件 · 全程真实命令</span></div>
     </div>
     <div class="card" style="margin-top:18px">
-      <b style="letter-spacing:2px;font-size:14px;color:var(--sea)">本册提要</b>
+      <b style="letter-spacing:2px;font-size:14px;color:var(--sea)">本片提要</b>
       <p style="font-size:15.5px;color:var(--ink-soft);margin-top:8px">每个写完的项目都值得一个仓库，但「有仓库」和「仓库活着」是两回事：push 不上去的认证、混进暂存区的密钥、两头分叉的历史、打开是 404 的主页——每一件都劝退过一批人。这篇按真实的上线路径走一遍：先分清两台服务器，再打通认证，理解提交的三区模型，把仓库镜像成双份，学会在断网时自救，最后挂上 Pages 与协作规矩。每一步先讲原理、给出可核对的数字，然后亲手在小样里做一遍。</p>
     </div>
     <div class="card" style="margin-top:14px">
@@ -130,7 +130,7 @@
   HostName ssh.github.com
   Port 443
   User git</pre></div>
-  <div class="note"><b>本手册的裁决：</b>个人日常用 HTTPS + 凭据管理器（少管一把钥匙）；多台机器、CI、以及 22 端口被封的环境用 SSH；<b>Gitee 私有仓直接上 SSH</b>——它的 HTTPS 凭证通道对第三方工具不算省心，SSH 一次通过后从未再折腾。</div>
+  <div class="note"><b>本篇的裁决：</b>个人日常用 HTTPS + 凭据管理器（少管一把钥匙）；多台机器、CI、以及 22 端口被封的环境用 SSH；<b>Gitee 私有仓直接上 SSH</b>——它的 HTTPS 凭证通道对第三方工具不算省心，SSH 一次通过后从未再折腾。</div>
 
   <div class="demo" id="d1">
     <div class="demo-head"><span class="demo-tag">互动 01</span><span class="demo-title">认证握手台 · 两套验票流程分别怎么走</span><span class="demo-hint">先点 git push，再按提示走</span></div>
@@ -179,7 +179,7 @@
 origin  https://gitee.com/starrysea1412/video-agent-lab.git (fetch)
 <span class="p">$</span> git remote set-url origin git@gitee.com:starrysea1412/video-agent-lab.git
 <span class="p">$</span> git push   <span class="c"># 枚举对象 → 写入 → 通了，此后没再折腾过</span></pre></div>
-    <p>收进手册的结论：<b>Gitee 私有仓，直接上 SSH，别在 HTTPS 上耗。</b></p>
+    <p>收进本篇的结论：<b>Gitee 私有仓，直接上 SSH，别在 HTTPS 上耗。</b></p>
   </div>
 </section>
 
@@ -373,7 +373,7 @@ origin  git@gitee.com:you/repo.git (push)      <span class="c"># ← 一次 push
   <p>本机挂着代理（比如 <code>127.0.0.1:7890</code>）时，git 不会自己用——要显式交代，而且建议用 <code>socks5h</code> 而不是 <code>socks5</code>：多个 <code>h</code> 表示<b>域名解析也交给代理做</b>，绕开本地 DNS 污染：</p>
   <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash</span></div><pre><span class="p">$</span> git config --global http.proxy socks5h://127.0.0.1:7890
 <span class="p">$</span> git config --global --unset http.proxy          <span class="c"># 代理软件一关就摘掉</span></pre></div>
-  <p>反过来是更常见的病：<b>代理软件已经关了，全局配置里的代理却没摘</b>，git 还在虔诚地敲一扇不存在的门——表现为一切 fetch/push 卡几十秒后超时。诊法就藏在报错里：看到 <code>Failed to connect to <b>127.0.0.1</b> port 7890</code>，就是 git 在找本地代理。本手册发布当晚就撞上一次，解法不改全局配置，单次覆盖：</p>
+  <p>反过来是更常见的病：<b>代理软件已经关了，全局配置里的代理却没摘</b>，git 还在虔诚地敲一扇不存在的门——表现为一切 fetch/push 卡几十秒后超时。诊法就藏在报错里：看到 <code>Failed to connect to <b>127.0.0.1</b> port 7890</code>，就是 git 在找本地代理。本篇发布当晚就撞上一次，解法不改全局配置，单次覆盖：</p>
   <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">当晚的真实命令</span></div><pre><span class="err">fatal: unable to access 'https://github.com/.../': Failed to connect to 127.0.0.1 port 7890</span>
 <span class="p">$</span> git -c http.proxy= -c https.proxy= push -u origin main   <span class="c"># 本次推送绕过代理，一次通过</span></pre></div>
 
@@ -395,7 +395,7 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
   <div class="walk">
     <span class="w-tag">🧭 真实走查 · 三</span>
     <div class="w-title">比五步本身更值钱的两个坑</div>
-    <p>当晚五步一次走通，倒是在细节上翻了两跤，都值得记进手册：<b>其一</b>，curl 的 JSON 带中文时必须写成文件再 <code>-d @body.json</code>——命令行内联中文经 Windows shell 转码就烂，报错还看不出是编码问题；<b>其二</b>，token 放请求头 <code>Authorization: Bearer &lt;token&gt;</code>，别拼进 URL——URL 会进 shell 历史和服务器日志。这套五步在自动发版场景同样能打，不只是救急。</p>
+    <p>当晚五步一次走通，倒是在细节上翻了两跤，都值得记进本篇：<b>其一</b>，curl 的 JSON 带中文时必须写成文件再 <code>-d @body.json</code>——命令行内联中文经 Windows shell 转码就烂，报错还看不出是编码问题；<b>其二</b>，token 放请求头 <code>Authorization: Bearer &lt;token&gt;</code>，别拼进 URL——URL 会进 shell 历史和服务器日志。这套五步在自动发版场景同样能打，不只是救急。</p>
   </div>
 
   <h3><span class="h3n">⚓ 5.5</span>先看官方是不是着火了</h3>
@@ -416,7 +416,7 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
 <!-- ================= 第六章 ================= -->
 <section class="chapter" id="ch6">
   <div class="ch-head"><span class="ch-no">06 · 第六章</span><h2>发布：GitHub Pages 与它的规矩</h2></div>
-  <p class="ch-lead">仓库不只是货架，还能直接变成网站。GitHub Pages 把仓库里的静态文件发布成 <code>github.io</code> 上的正式页面——你此刻读的这篇手册，就住在那里。</p>
+  <p class="ch-lead">仓库不只是货架，还能直接变成网站。GitHub Pages 把仓库里的静态文件发布成 <code>github.io</code> 上的正式页面——你此刻读的这篇 VOL.14，就住在那里。</p>
 
   <h3><span class="h3n">⚓ 6.1</span>三种发布源，三种摆法</h3>
   <p>仓库 <code>Settings → Pages</code> 选发布源，保存后一两分钟，<code>https://你的名.github.io/仓库名/</code> 就挂灯了。三个选项对应三种摆法：<b>main / 根目录</b>——仓库根就是网站根，文章站、文档站最常用；<b>main / docs 目录</b>——代码和网页分家，<code>docs/</code> 才是店面；<b>gh-pages 分支</b>——给构建产物住的单间，Actions 构建完把成品推到这条分支，源码与成品各安各的。</p>
@@ -536,13 +536,13 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
   <span class="beacon">· 完 ·</span>
   <h2>收尾：<span class="l">三份副本，两种介质，一个异地</span></h2>
   <p>数据安全的 3-2-1 法则：重要数据存 <b>3</b> 份，放 <b>2</b> 种介质，其中 <b>1</b> 份在异地。git 把这个法则拆成了最朴素的形态——本地仓库是一份，任何远程是第二份，双仓是第三份；磁盘是一种介质，云端是另一种；GitHub 与 Gitee，总有一个在「异地」。</p>
-  <p>这篇手册自己就住在刚才搭好的双仓仓库里：发布当晚它亲历了 7890 残代理卡 push（第五章的病，解法同款）、Pages 第一轮 404（走查四的坑）。代码的家安好了，剩下的，是天天提交。</p>
+  <p>这篇 VOL.14 自己就住在刚才搭好的双仓仓库里：发布当晚它亲历了 7890 残代理卡 push（第五章的病，解法同款）、Pages 第一轮 404（走查四的坑）。代码的家安好了，剩下的，是天天提交。</p>
 </section>
 
 </main>
 
 <footer class="site">
-  <div class="line">托管手册 · 把代码安个家（GitHub 与 Gitee）</div>
+  <div class="line">造物手记 VOL.14 · 把代码安个家（GitHub 与 Gitee）</div>
   <div class="line">七章 · 八段互动 · 四次走查 · 单文件 · 零依赖</div>
   <div class="line">交互确定性模拟 · 海图 / 2026 · StarrySea1412</div>
 </footer>
