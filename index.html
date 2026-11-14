@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>把代码安个家 · GitHub 与 Gitee 双港使用指南</title>
-<meta name="description" content="从注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——七个航段、五枚可亲手操作的小样、四次真实走查。">
+<title>把代码安个家 · 托管手册（GitHub 与 Gitee）</title>
+<meta name="description" content="注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——每一步拆开给你玩：五段互动全是确定性状态机，报错原文来自真实终端，走查来自真实发布现场。">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -12,11 +12,12 @@
 
 <header class="hero">
   <div class="wrap">
-    <span class="kicker"><i class="dot"></i>代码托管手册 · 零依赖番外</span>
+    <div style="font-size:13px;letter-spacing:3px;color:var(--muted)">托管手册 GIT PRIMER</div>
+    <div style="font-size:12px;letter-spacing:2px;color:var(--faint);margin-top:2px">REPOS &amp; REMOTES · 2026.11 · 交互式双仓册 · 手册系列第四部</div>
     <h1>把代码<br><em>安个家</em></h1>
-    <p class="sub">GitHub 与 Gitee 双港使用指南。从注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——<b>七个航段 · 五枚小样 · 四次真实走查</b>，每一段都能在这张海图上亲手跑一遍。</p>
+    <p class="sub">注册、认证、第一次 push，到双仓互备、断网自救、Pages 发布——每一步都拆开给你玩：<b>五段互动全是确定性状态机</b>，报错原文来自真实终端，四次走查来自真实发布现场。GitHub 与 Gitee 两座服务器，一篇跑通。</p>
     <div class="route">
-      <svg viewBox="0 0 1000 132" width="100%" aria-label="航线图：本地码头到两座港口">
+      <svg viewBox="0 0 1000 132" width="100%" aria-label="结构图：本机仓库 push 到两台远程服务器">
         <defs>
           <marker id="arw" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
             <path d="M0,0 L8,4 L0,8 z" fill="#e8642c"/>
@@ -31,98 +32,123 @@
           <text x="41" y="62" text-anchor="middle" fill="#16324f">本机</text>
           <text x="41" y="82" text-anchor="middle" fill="#6f8aa1" font-size="11">.git 仓库</text>
           <rect x="336" y="44" width="70" height="44" rx="22" fill="#16324f"/>
-          <text x="371" y="71" text-anchor="middle" fill="#dce7f0" font-size="13">🛶 提交</text>
+          <text x="371" y="71" text-anchor="middle" fill="#dce7f0" font-size="13">🛶 push</text>
           <rect x="806" y="12" width="182" height="44" rx="12" fill="#fafcfd" stroke="#e8642c" stroke-width="2"/>
-          <text x="897" y="33" text-anchor="middle" fill="#16324f">GitHub 港</text>
-          <text x="897" y="49" text-anchor="middle" fill="#e8642c" font-size="10.5">家门面 · 全球可达</text>
+          <text x="897" y="33" text-anchor="middle" fill="#16324f">github.com</text>
+          <text x="897" y="49" text-anchor="middle" fill="#e8642c" font-size="10.5">门面 · 生态 · Pages</text>
           <rect x="806" y="76" width="182" height="44" rx="12" fill="#fafcfd" stroke="#4f88a8" stroke-width="2"/>
-          <text x="897" y="97" text-anchor="middle" fill="#16324f">Gitee 港</text>
-          <text x="897" y="113" text-anchor="middle" fill="#4f88a8" font-size="10.5">保险柜 · 国内直连</text>
+          <text x="897" y="97" text-anchor="middle" fill="#16324f">gitee.com</text>
+          <text x="897" y="113" text-anchor="middle" fill="#4f88a8" font-size="10.5">直连稳 · 备份 · 合规</text>
         </g>
       </svg>
+      <div style="font-size:12px;color:var(--faint);letter-spacing:1px;margin-top:8px">FIG. A · 同一个仓库，两台服务器——push 把本地提交原样复制到远端</div>
     </div>
     <div class="stats">
-      <div class="s"><b>2</b><span>座港口</span></div>
-      <div class="s"><b>7</b><span>个航段</span></div>
-      <div class="s"><b>5</b><span>枚小样</span></div>
-      <div class="s"><b>4</b><span>次真实走查</span></div>
+      <div class="s"><b>7 章</b><span>认证 → 提交 → 双仓 → 断网 → 发布 → 协作</span></div>
+      <div class="s"><b>5 段互动</b><span>全部确定性状态机 · 可重置重放</span></div>
+      <div class="s"><b>4 次走查</b><span>报错原文 · 来自真实发布现场</span></div>
+      <div class="s"><b>0 依赖</b><span>单文件 · 全程真实命令</span></div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <b style="letter-spacing:2px;font-size:14px;color:var(--sea)">本册提要</b>
+      <p style="font-size:15.5px;color:var(--ink-soft);margin-top:8px">每个写完的项目都值得一个仓库，但「有仓库」和「仓库活着」是两回事：push 不上去的认证、混进暂存区的密钥、两头分叉的历史、打开是 404 的主页——每一件都劝退过一批人。这篇按真实的上线路径走一遍：先分清两台服务器，再打通认证，理解提交的三区模型，把仓库镜像成双份，学会在断网时自救，最后挂上 Pages 与协作规矩。每一步先讲原理、给出可核对的数字，然后亲手在小样里做一遍。</p>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <b style="letter-spacing:2px;font-size:14px;color:var(--sea)">CONTENTS · 七章托管</b>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 26px;margin-top:10px;font-size:15px">
+        <div><b style="color:var(--orange)">01</b> 两座仓库 —— 生态、配额与合规的分工</div>
+        <div><b style="color:var(--orange)">02</b> 认证 —— 密码已死：令牌与钥匙对</div>
+        <div><b style="color:var(--orange)">03</b> 提交 —— 三区流水线与对象库</div>
+        <div><b style="color:var(--orange)">04</b> 双仓 —— 一条 remote，两台服务器</div>
+        <div><b style="color:var(--orange)">05</b> 断网 —— 超时、代理、镜像与 API 兜底</div>
+        <div><b style="color:var(--orange)">06</b> 发布 —— Pages：三种源与半成品坑</div>
+        <div><b style="color:var(--orange)">07</b> 协作 —— Issue、分支、PR 与五人的边界</div>
+        <div style="color:var(--muted)">附 —— 速查卡：如果只带走十句</div>
+      </div>
     </div>
   </div>
 </header>
 
 <main class="wrap">
 
-<!-- ================= 第 1 港 ================= -->
+<!-- ================= 第一章 ================= -->
 <section class="chapter" id="ch1">
-  <div class="ch-head"><span class="ch-no">第 1 港</span><h2>开港之前：先想清楚代码住在哪</h2></div>
-  <p class="ch-lead">一艘船停在船坞里，不叫航运，叫库存。写完只存在自己硬盘上的代码也一样——硬盘会坏，目录会删错，改乱了的文件再也回不到上周三。托管仓库这件事，本质是给船找一个<b>出了你的地盘也能靠泊的港</b>。</p>
+  <div class="ch-head"><span class="ch-no">01 · 第一章</span><h2>两座仓库：GitHub 与 Gitee 的分工</h2></div>
+  <p class="ch-lead">代码只存在自己硬盘上，等于船坞里的库存：硬盘会坏、目录会删错、改乱了的文件回不到上周三。托管仓库做的事很具体——<b>把你的提交历史原样复制到另一台服务器上</b>。问题是复制到哪台。</p>
 
-  <h3><span class="h3n">⚓ 1.1</span>两座港口，两种性格</h3>
-  <p><b>GitHub</b> 是全球开源世界的中央车站：几乎所有重要的开源项目都停在这里，文档、CI、包管理、代码审查围绕它长成了一整片生态。对开发者来说它还有一层身份——<b>一份能点开的简历</b>。代价是：它在墙的另一侧，连通性要看时刻和运气。</p>
-  <p><b>Gitee（码云）</b>是国内访问最稳的托管平台：服务器在国内，clone、push 都不用碰运气；免费私有仓库政策大方，适合放不能公开的工作代码和个人备份。它的性格也更「守规矩」：想公开一个仓库，得先实名认证，再等人工审核。</p>
+  <h3><span class="h3n">⚓ 1.1</span>两台服务器，两种性格</h3>
+  <p><b>GitHub</b> 是全球开源生态的事实中枢：几乎所有重要的开源项目都托管于此，CI（Actions）、静态站点（Pages）、包仓库（Packages）、代码审查围绕它长成了一整片体系。它还有一层身份——<b>一份能点开的简历</b>。代价是它在墙的另一侧：连通性按时刻波动，故障时要靠 <a href="https://www.githubstatus.com" target="_blank" rel="noopener">githubstatus.com</a> 区分「我的问题」和「它的问题」。</p>
+  <p><b>Gitee（码云）</b>是开源中国团队的国内托管平台：服务器在国内，clone、push 不用碰运气；免费私有仓库政策大方，适合放不能公开的工作代码。它的性格也更「守规矩」——实名认证制，想公开一个仓库要过人工审核。</p>
 
   <div class="tbl-wrap"><table class="tbl">
-    <thead><tr><th>维度</th><th>GitHub</th><th>Gitee</th></tr></thead>
+    <thead><tr><th>维度</th><th>GitHub（Free 计划）</th><th>Gitee（免费版）</th></tr></thead>
     <tbody>
       <tr><td>定位</td><td>全球开源枢纽 · 简历与生态</td><td>国内托管 · 备份与合规</td></tr>
-      <tr><td>国内直连</td><td class="bad">时好时坏，看时刻</td><td class="good">稳定</td></tr>
-      <tr><td>免费私有仓库</td><td>数量不限，Actions 每月 2000 分钟</td><td>1000 个仓，私有协作 ≤ 5 人，单仓 500MB</td></tr>
+      <tr><td>国内直连</td><td class="bad">尽力而为，按时刻波动</td><td class="good">稳定</td></tr>
+      <tr><td>仓库数量</td><td>公开/私有不限</td><td>1000 个（公有私有合计）</td></tr>
+      <tr><td>容量</td><td>单仓建议 &lt;1GB，单文件 100MB</td><td>总 5GB · 单仓 500MB · 单文件 50MB</td></tr>
+      <tr><td>私有协作人数</td><td class="good">不限</td><td class="bad">账号下所有私有仓合计 ≤5 人</td></tr>
       <tr><td>开源发布</td><td class="good">建仓即公开</td><td class="bad">实名认证 + 人工审核（2022 年 5 月起）</td></tr>
-      <tr><td>静态站点</td><td class="good">GitHub Pages，本站就在上面</td><td class="bad">Gitee Pages 已于 2024 年 5 月下线</td></tr>
-      <tr><td>CI / 自动化</td><td class="good">Actions 生态庞大</td><td>Gitee Go，可用但生态小</td></tr>
+      <tr><td>静态站点</td><td class="good">Pages：站点 1GB / 月带宽 100GB 软限</td><td class="bad">Pages 已于 2024 年 5 月下线</td></tr>
+      <tr><td>CI</td><td class="good">Actions 每月 2000 分钟（私有仓计时）</td><td>Gitee Go，可用但生态小</td></tr>
     </tbody>
   </table></div>
 
-  <div class="note"><b>结论先给：</b>这不是二选一的题。它们是分工——<b>GitHub 当家门面，Gitee 当保险柜</b>。门面负责被人看见，保险柜负责在你最倒霉的那天让你还能开工。第 4 港会手把手把两个港接成一条航线。</div>
+  <div class="note"><b>先回答「两个都用是不是太麻烦」：</b>不麻烦，这是笔成本几乎为零的保险。git 的 remote 机制天生支持多个远端地址（第四章实操），一份提交 push 两次就是两份异地副本。真正的分工是：<b>GitHub 当门面被人看，Gitee 当备份保下限</b>——哪天 GitHub 连不上，Gitee 那份随时能开工。</div>
 
   <h3><span class="h3n">⚓ 1.2</span>注册台上的三件小事</h3>
-  <p>两边的账号注册都不难，值得写下来的只有三件：</p>
-  <p>① <b>GitHub 的两步验证（2FA）现在绕不过去</b>——2023 年底起对活跃用户强制开启。装一个验证器 App（如 Aegis、1Password），扫一次码，把恢复码抄在纸上。这十分钟的保险，将来救的是整个账号。</p>
-  <p>② <b>Gitee 的实名认证早做早好</b>。要用 Pages、要开开源仓都绕不开它，而人工审核高峰期可能要等上几天——别等到要发布那天才想起来。</p>
-  <p>③ 用户名就是你的门牌号。GitHub 的用户名会出现在每一个仓库 URL、每一页 Pages 里（<code>github.com/你的名/仓库名</code>），取一个愿意五年后还署在封面上的名字。</p>
+  <p>① <b>GitHub 的两步验证（2FA）绕不过去</b>——2023 年底起对活跃用户强制开启。装一个验证器 App（Aegis、1Password 都行），扫一次码，并把恢复码抄在纸上：手机丢了，恢复码是唯一的后门。</p>
+  <p>② <b>Gitee 的实名认证早做早好</b>。要用 Pages（虽已下线）、要开开源仓都绕不开它，人工审核高峰期可能要等几天——别等到发布当天才想起来。</p>
+  <p>③ <b>用户名就是门牌号</b>。GitHub 用户名会出现在每个仓库 URL、每页 Pages（<code>github.com/你的名/仓库名</code>）、甚至提交统计里。取一个五年后还愿意署在封面上的名字，改名的成本随提交数上升。</p>
 </section>
 
-<div class="meridian"><span>· · · 航段 1 · · ·</span></div>
+<div class="meridian"><span>· 第一章 完 ·</span></div>
 
-<!-- ================= 第 2 港 ================= -->
+<!-- ================= 第二章 ================= -->
 <section class="chapter" id="ch2">
-  <div class="ch-head"><span class="ch-no">第 2 港</span><h2>第一次握手：HTTPS 还是 SSH</h2></div>
-  <p class="ch-lead">账号是身份证，认证是船票。每次 push，港口都要验一次「这条推送真的是你发的吗」。验法有两种，性格完全不同——HTTPS 像出示证件，SSH 像对暗号。</p>
+  <div class="ch-head"><span class="ch-no">02 · 第二章</span><h2>认证：密码已死，令牌与钥匙对</h2></div>
+  <p class="ch-lead">账号是身份证，认证是每次 push 都要重考的门票。GitHub 与 Gitee 都只认两种凭证：HTTP(S) 通道的<b>令牌</b>，SSH 通道的<b>密钥对</b>。它们的原理、管辖和坑各不相同。</p>
 
-  <h3><span class="h3n">⚓ 2.1</span>HTTPS：出示证件</h3>
-  <p>HTTPS 认证就是<b>用户名 + 令牌</b>。注意，是令牌不是密码——GitHub 从 2021 年 8 月起彻底停掉了「密码推代码」，密码只能在网页登录时用。命令行里要的是 Personal Access Token：在 <code>Settings → Developer settings → Tokens</code> 里生成，现在推荐 fine-grained 类型——可以<b>只授权某几个仓库、只给读写 Contents 的权限、设定过期日</b>。令牌泄露的伤害范围，取决于你给它的权限有多大。</p>
-  <p>好消息是你不需要背下这串令牌。Windows 的 Git 自带<b>凭据管理器（Credential Manager）</b>：第一次 push 弹出登录窗口，授权一次，之后它替你把令牌收进系统保险箱，每次自动出示。macOS 用钥匙串，Linux 可配 <code>libsecret</code>。</p>
+  <h3><span class="h3n">⚓ 2.1</span>密码是怎么死的</h3>
+  <p>2021 年 8 月 13 日起，GitHub 彻底关闭了「账号密码推代码」——密码只在网页登录时有用。原因很直接：密码一旦在别处泄露（撞库、钓鱼），攻击者能直接重放它对代码仓库做任何事；而令牌可以<b>限定权限、限定仓库、设定过期时间</b>，泄露的伤害被圈在授权范围内。Gitee 的 HTTPS 通道同样不再接受账号密码，逻辑相同。</p>
+  <p>GitHub 现在发两种令牌：老的 <b>classic token</b>（前缀 <code>ghp_</code>，权限按「作用域」整片授权，比如勾了 repo 就等于全部仓库读写）；新推荐的 <b>fine-grained token</b>（前缀 <code>github_pat_</code>）可以<b>只勾选某几个仓库、只放行 Contents 读或写、必须设过期日</b>。同一件事，伤害半径差一个量级——发令牌时多点的每一下勾选，都是将来泄露时的损失边界。</p>
+  <p>好消息是你不需要背令牌。git 的凭证协议分两步：<code>git credential fill</code> 在推送前向<b>凭证助手（credential helper）</b>要凭据，没有就弹一次登录框；成功后 <code>git credential approve</code> 把它交给助手存储。Windows 的 Git 自带 <b>Git Credential Manager</b>，背后是系统凭据管理器；macOS 用钥匙串。于是「第一次弹窗、之后免输」，令牌躺在系统保险箱里自动出示。</p>
 
-  <h3><span class="h3n">⚓ 2.2</span>SSH：对暗号</h3>
-  <p>SSH 认证的核心是一对钥匙：<b>私钥住在你电脑里，永远不出门</b>；公钥贴到平台上，谁都能看，但它推不出私钥。push 时，港口发来一道随机的「暗号题」，你的电脑用私钥签了名递回去，港口用公钥验证——答案本身从头到尾没有传输过，所以抓包也抓不走任何能重放的东西。</p>
-  <p>配一对钥匙只要三行：</p>
-  <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash</span></div><pre><span class="p">$</span> ssh-keygen -t ed25519 -C "you@example.com"   <span class="c"># 一路回车，钥匙对落在本机 ~/.ssh</span>
-<span class="p">$</span> cat ~/.ssh/id_ed25519.pub                    <span class="c"># 复制这一整行「公钥」</span>
-<span class="p">$</span> ssh -T git@github.com                        <span class="c"># 验船票：Hi StarrySea1412! 就通了</span></pre></div>
-  <p>公钥分别贴到 GitHub 的 <code>Settings → SSH and GPG keys</code> 和 Gitee 的 <code>设置 → SSH 公钥</code>。一把钥匙可以同时开两个港，不用各配一套。</p>
-  <p>墙内还有一步先手棋：SSH 默认走 22 端口，有些网络环境对它不友好，但 443 端口（HTTPS 用的那个）通常畅通。GitHub 官方在 <code>ssh.github.com:443</code> 留了一条备用航道，写进 <code>~/.ssh/config</code> 即可：</p>
+  <h3><span class="h3n">⚓ 2.2</span>SSH：私钥不出门的挑战-应答</h3>
+  <p>SSH 认证的核心是一对钥匙：<b>私钥住在本机 <code>~/.ssh</code>，永远不联网</b>；公钥贴上平台，谁都能看——它推不出私钥。push 时港口发来一串随机数（挑战），本机用私钥签名回递，港口用公钥验证。秘密本身从未上线，抓包也抓不走能重放的东西。</p>
+  <p>算法选 <b>Ed25519</b>（EdDSA，256 位）：密钥串比 RSA 短得多、签名更快，安全性相当；只有在伺候特别老的系统时才需要退回 RSA（4096 位起步）。三行配好：</p>
+  <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash</span></div><pre><span class="p">$</span> ssh-keygen -t ed25519 -C "you@example.com"   <span class="c"># 生成密钥对，落在 ~/.ssh</span>
+<span class="p">$</span> cat ~/.ssh/id_ed25519.pub                    <span class="c"># 复制这行「公钥」</span>
+<span class="p">$</span> ssh -T git@github.com                        <span class="c"># 第一次会问是否信任主机指纹，yes</span></pre></div>
+  <p>公钥分别贴到 GitHub 的 <code>Settings → SSH and GPG keys</code> 和 Gitee 的 <code>设置 → SSH 公钥</code>。一把钥匙可以同时开两台服务器，不用各配一套。验证成功的原话长这样：</p>
+  <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">真实输出</span></div><pre><span class="ok">Hi StarrySea1412! You've successfully authenticated, but GitHub does not provide shell access.</span></pre></div>
+  <p>第一次连接时那个「是否信任主机指纹」的提问值得认真对待——确认的是 <b>known_hosts</b> 里的服务器指纹，防的是中间人冒充平台。</p>
+
+  <h3><span class="h3n">⚓ 2.3</span>经典追问：HTTPS 还是 SSH？</h3>
+  <p>两个都合法，区别在运维面。HTTPS 走 443 端口——互联网上最不可能被封的端口；凭证交给凭据管理器，换机时重新授权一次即可；令牌撤销与重发都在网页上完成。SSH 免去了令牌管理，配一次用到天荒地老，还能用 <b>deploy key</b> 给 CI 发一把只读钥匙；但默认走 22 端口，部分网络环境对它不友好——备用方案是 GitHub 官方的 443 航道，写进 <code>~/.ssh/config</code>：</p>
   <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">~/.ssh/config</span></div><pre>Host github.com
   HostName ssh.github.com
   Port 443
   User git</pre></div>
+  <div class="note"><b>本手册的裁决：</b>个人日常用 HTTPS + 凭据管理器（少管一把钥匙）；多台机器、CI、以及 22 端口被封的环境用 SSH；<b>Gitee 私有仓直接上 SSH</b>——它的 HTTPS 凭证通道对第三方工具不算省心，SSH 一次通过后从未再折腾。</div>
 
   <div class="demo" id="d1">
-    <div class="demo-head"><span class="demo-tag">小样 1</span><span class="demo-title">握手室 · 两种认证的第一次接触</span><span class="demo-hint">点按钮，看两套验票流程分别怎么走</span></div>
+    <div class="demo-head"><span class="demo-tag">互动 01</span><span class="demo-title">认证握手台 · 两套验票流程分别怎么走</span><span class="demo-hint">先点 git push，再按提示走</span></div>
     <div class="demo-body">
       <div class="d1-mode">
-        <button id="d1-m-https" class="on">HTTPS · 出示证件</button>
-        <button id="d1-m-ssh">SSH · 对暗号</button>
+        <button id="d1-m-https" class="on">HTTPS · 令牌</button>
+        <button id="d1-m-ssh">SSH · 密钥对</button>
       </div>
       <div id="d1-https" class="d1-stage">
         <div class="d1-scene">
-          <div class="d1-node"><div class="box" id="d1-hs-boat"><div class="nm">🛶 你的电脑</div><div class="ds" id="d1-hs-boat-d">手里握着令牌（还没有）</div></div></div>
+          <div class="d1-node"><div class="box" id="d1-hs-boat"><div class="nm">🖥️ 你的电脑</div><div class="ds" id="d1-hs-boat-d">手里握着令牌（还没有）</div></div></div>
           <div class="d1-lane"><div class="wire"><span class="pkt" id="d1-hs-pkt">🎫</span></div><span class="d3-lbl">HTTPS 443</span></div>
-          <div class="d1-node"><div class="box"><div class="nm">🏢 github.com</div><div class="ds">查证件：这令牌有效吗？<br>权限够吗？过期了吗？</div></div></div>
+          <div class="d1-node"><div class="box"><div class="nm">🏢 github.com</div><div class="ds">查令牌：有效吗？<br>权限够吗？过期了吗？</div></div></div>
         </div>
         <div class="d1-pwd" id="d1-hs-dialog">
           <div class="row"><span>用户名</span><input id="d1-hs-user" value="StarrySea1412" readonly></div>
           <div class="row"><span>令　牌</span><input id="d1-hs-pass" type="password" value="github_pat_xxxxxxxx" readonly></div>
-          <div class="row"><button class="btn primary" id="d1-hs-save">✓ 存入凭据管理器</button><span style="font-size:12.5px;color:var(--muted)">（Windows 凭据管理器 / macOS 钥匙串替你收着）</span></div>
+          <div class="row"><button class="btn primary" id="d1-hs-save">✓ 存入凭据管理器</button><span style="font-size:12.5px;color:var(--muted)">（credential approve → 系统保险箱）</span></div>
         </div>
         <div class="btn-row" style="margin-top:12px">
           <button class="btn primary" id="d1-hs-push">git push</button>
@@ -135,53 +161,58 @@
           <div class="d1-key priv" id="d1-k1"><div class="ic">🗝️</div><div class="t">私钥 id_ed25519</div><div class="d">住在 ~/.ssh，权限 600<br>永不出门，谁要都不给</div></div>
           <div class="d1-key pub" id="d1-k2"><div class="ic">🔗</div><div class="t">公钥 id_ed25519.pub</div><div class="d">贴上平台随便看<br>推不出私钥，不怕泄露</div></div>
         </div>
-        <div class="term" style="margin-top:12px"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">ssh -T git@github.com</span></div><pre id="d1-ssh-term"><span class="c"># 按下「验证船票」，看一场挑战-应答</span></pre></div>
+        <div class="term" style="margin-top:12px"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">ssh -T git@github.com</span></div><pre id="d1-ssh-term"><span class="c"># 按下「验证」，看一场挑战-应答</span></pre></div>
         <div class="btn-row">
-          <button class="btn primary" id="d1-ssh-test">验证船票</button>
-          <label class="toggle"><input type="checkbox" id="d1-ssh-443"><span class="tk"></span>走 443 备用航道（ssh.github.com:443）</label>
+          <button class="btn primary" id="d1-ssh-test">验证</button>
+          <label class="toggle"><input type="checkbox" id="d1-ssh-443"><span class="tk"></span>走 443 备用端口（ssh.github.com:443）</label>
         </div>
       </div>
     </div>
+    <div class="demo-foot">确定性模拟：HTTPS 侧第一次 push 弹窗索取令牌，存入后自动出示；SSH 侧先亮出钥匙对，再走「挑战 → 签名 → 验签」三步。令牌过期按钮复现 401 的世界。</div>
   </div>
 
   <div class="walk">
     <span class="w-tag">🧭 真实走查 · 一</span>
     <div class="w-title">Gitee 那次「Authentication failed」</div>
-    <p>某天给一个私有仓推 Gitee，HTTPS 通道稳定报 <code>Authentication failed</code>——凭据管理器里存的 GitHub 令牌被 Gitee 拒收，Gitee 的 HTTPS 密码通道又早不支持。换 SSH 后一次通过，改动只有一行：</p>
+    <p>某天给一个私有仓推 Gitee，HTTPS 通道稳定报 <code>Authentication failed</code>——本机凭据管理器里存的 GitHub 令牌被 Gitee 拒收，而 Gitee 的 HTTPS 密码通道早已关闭。换 SSH 后一次通过，改动只有一行：</p>
     <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash</span></div><pre><span class="p">$</span> git remote -v
 origin  https://gitee.com/starrysea1412/video-agent-lab.git (fetch)
 <span class="p">$</span> git remote set-url origin git@gitee.com:starrysea1412/video-agent-lab.git
-<span class="p">$</span> git push   <span class="c"># 枚举对象 → 写入 → 通了，从此没再折腾过</span></pre></div>
-    <p>经验收进航海日志：<b>Gitee 私有仓，直接上 SSH，别在 HTTPS 上浪费时间。</b></p>
+<span class="p">$</span> git push   <span class="c"># 枚举对象 → 写入 → 通了，此后没再折腾过</span></pre></div>
+    <p>收进手册的结论：<b>Gitee 私有仓，直接上 SSH，别在 HTTPS 上耗。</b></p>
   </div>
 </section>
 
-<div class="meridian"><span>· · · 航段 2 · · ·</span></div>
+<div class="meridian"><span>· 第二章 完 ·</span></div>
 
-<!-- ================= 第 3 港 ================= -->
+<!-- ================= 第三章 ================= -->
 <section class="chapter" id="ch3">
-  <div class="ch-head"><span class="ch-no">第 3 港</span><h2>代码上船：add、commit、push 的三区流水线</h2></div>
-  <p class="ch-lead">git 把你的目录划成几个舱室：你正在改的文件在<b>工作区</b>，<code>git add</code> 把选中的货搬上<b>暂存区</b>（这批货的装箱单），<code>git commit</code> 把整箱封舱、钉上一个永不重复的编号，存进<b>本地仓库</b>；而 <code>git push</code> 才让船真正离港，驶向远程。</p>
+  <div class="ch-head"><span class="ch-no">03 · 第三章</span><h2>提交：三区流水线与对象库</h2></div>
+  <p class="ch-lead">git 把目录划成几个舱室：<b>工作区</b>是你正在改的文件，<code>git add</code> 把选中的内容写进<b>暂存区</b>（这批提交的装箱单），<code>git commit</code> 把整箱内容拍成一张<b>快照</b>存进本地对象库，<code>git push</code> 才把快照复制到远程服务器。</p>
 
-  <h3><span class="h3n">⚓ 3.1</span>首航全流程</h3>
-  <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash · 新仓库的第一次出港</span></div><pre><span class="p">$</span> git init                          <span class="c"># 在项目根目录起一个本地仓库（.git 舱）</span>
-<span class="p">$</span> git add .                         <span class="c"># 全部装上暂存区（先确认 .gitignore 写好了！）</span>
-<span class="p">$</span> git commit -m "first voyage"     <span class="c"># 封舱，形成第一个提交</span>
-<span class="p">$</span> git branch -M main                <span class="c"># 主分支命名为 main</span>
+  <h3><span class="h3n">⚓ 3.1</span>提交的是什么：快照，不是文件</h3>
+  <p>很多人把 commit 想成「存了几个文件」，实际存的是三样东西：<b>blob</b>（文件内容的字节）、<b>tree</b>（目录结构，把 blob 和文件名对上）、<b>commit</b>（指向一个 tree，记录父提交、作者、时间与说明）。每样东西都有一个 <b>SHA-1 哈希</b>——40 位十六进制，内容变一位，哈希就面目全非。所以 git 的历史本质是「一串快照」，而非「文件修改记录」：回滚、分支、diff，全都是在快照之间做算术。</p>
+  <p>这也解释了 commit message 该写什么——既然快照记下了「改了什么」，message 的任务是<b>「为什么」</b>。<code>修复 HUD 暗色模式对比度</code> 有信息量，<code>改了点东西</code> 没有。惯例是祈使句、首行 50 字符内（详情挪空行之后的正文，72 字符换行）——git 自家的提交历史就是按这个格式写的。</p>
+
+  <h3><span class="h3n">⚓ 3.2</span>首航全流程</h3>
+  <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash · 新仓库的第一次推送</span></div><pre><span class="p">$</span> git init                          <span class="c"># 项目根目录起本地仓库（生成 .git/）</span>
+<span class="p">$</span> git add .                         <span class="c"># 全部装上暂存区（先确认 .gitignore！）</span>
+<span class="p">$</span> git commit -m "first commit"      <span class="c"># 快照入库，得到首个 SHA</span>
+<span class="p">$</span> git branch -M main                <span class="c"># 主分支命名 main（GitHub 新仓默认）</span>
 <span class="p">$</span> git remote add origin git@github.com:you/repo.git
-<span class="p">$</span> git push -u origin main           <span class="c"># -u 记住航线：以后 push/pull 不用再指名</span></pre></div>
-  <p>之后的日子就只剩三拍：<code>add → commit → push</code>。一天的活儿可以摊成十个小提交，也可以攒成一个大提交——但<b>每个提交都应该是一个能说明白的完整动作</b>，像「修复 HUD 面板在暗色模式下的对比度」，而不是「改了点东西」。</p>
+<span class="p">$</span> git push -u origin main           <span class="c"># -u 记住上游，此后 push/pull 不必再指名</span></pre></div>
+  <p>之后的日常只剩三拍：<code>add → commit → push</code>。暂存区存在的意义是<b>允许分批</b>：同一个文件改了两处，<code>git add -p</code> 可以只把其中一处装进这次提交——把「一次提交 = 一个说得清的动作」变成物理上可能的事。</p>
 
-  <h3><span class="h3n">⚓ 3.2</span>开船前，先写 .gitignore</h3>
-  <p>不是所有货都该上船：<b>密钥和令牌</b>（<code>.env</code>、<code>*.key</code>）绝不能进仓库——推上去只要一秒，撤干净要脱一层皮（历史里每个提交都还留着它）；<b>依赖目录</b>（<code>node_modules/</code>、<code>venv/</code>）体积巨大且能用 lock 文件复原；<b>构建产物</b>（<code>dist/</code>、<code>__pycache__/</code>）同理。仓库只收藏「源」，不收藏「随时能再生成的零件」。</p>
-  <p>尤其提醒：<code>.gitignore</code> 只对<b>还没被跟踪</b>的文件生效。已经 add 过的文件，要先 <code>git rm --cached 秘密.env</code> 再补 ignore——顺序反了等于白写。</p>
+  <h3><span class="h3n">⚓ 3.3</span>开船前先写 .gitignore</h3>
+  <p>不是所有文件都该进库：<b>密钥与令牌</b>（<code>.env</code>、<code>*.key</code>）——push 只要一秒，撤干净要重写全部历史（每个老快照里它都还在）；<b>依赖目录</b>（<code>node_modules/</code>、<code>venv/</code>）体积巨大，且能靠 lock 文件复原；<b>构建产物</b>（<code>dist/</code>、<code>__pycache__/</code>）随时可再生。库里只收藏「源」。</p>
+  <p><b>经典追问：为什么 .gitignore 对已跟踪的文件无效？</b>因为 ignore 规则只作用于「还未被跟踪」文件的枚举阶段——已被 add 过的文件在索引里有正式户口，状态检查根本不会去对照 ignore 名单。解法是先撤销户口再补规则：<code>git rm --cached 秘密.env</code>（从索引删除、保留工作区文件），提交后 ignore 才开始管它。<b>顺序反了等于白写。</b></p>
 
   <div class="demo" id="d2">
-    <div class="demo-head"><span class="demo-tag">小样 2</span><span class="demo-title">三区搬运线 · 亲手把货物送上船</span><span class="demo-hint">点选文件 → add → commit → push</span></div>
+    <div class="demo-head"><span class="demo-tag">互动 02</span><span class="demo-title">三区流水线 · 亲手送一次提交出门</span><span class="demo-hint">点选文件 → add → commit → push</span></div>
     <div class="demo-body">
       <div class="d2-lanes">
         <div class="d2-lane" id="d2-wt"><h4>工作区<span class="en">working dir</span></h4><div id="d2-wt-files"></div></div>
-        <div class="d2-lane" id="d2-ix"><h4>暂存区<span class="en">staging</span></h4><div id="d2-ix-files"></div></div>
+        <div class="d2-lane" id="d2-ix"><h4>暂存区<span class="en">index</span></h4><div id="d2-ix-files"></div></div>
         <div class="d2-lane" id="d2-lc"><h4>本地仓库<span class="en">.git</span></h4><div class="d2-dots" id="d2-lc-dots"></div><div class="d2-ab" id="d2-lc-ab"></div></div>
         <div class="d2-lane" id="d2-rc"><h4>远程仓库<span class="en">remote</span></h4><div class="d2-dots" id="d2-rc-dots"></div><div class="d2-ab" id="d2-rc-ab">·</div></div>
       </div>
@@ -189,139 +220,146 @@ origin  https://gitee.com/starrysea1412/video-agent-lab.git (fetch)
         <button class="btn primary" id="d2-add">git add &lt;选中的&gt;</button>
         <input class="d2-msg" id="d2-msg" placeholder="commit 信息，比如：修复 HUD 暗色对比度" maxlength="40">
         <button class="btn primary" id="d2-commit">git commit</button>
-        <button class="btn" id="d2-push">git push ⛴️</button>
+        <button class="btn" id="d2-push">git push</button>
         <label class="toggle"><input type="checkbox" id="d2-ignore"><span class="tk"></span>把 secret.key 写进 .gitignore</label>
         <button class="btn ghost" id="d2-reset">重来</button>
       </div>
       <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash</span></div><pre id="d2-term"><span class="c"># 货物已备好：点文件芯片选中/取消，然后按流水线走一遍</span></pre></div>
     </div>
+    <div class="demo-foot">确定性模拟：先不勾 .gitignore 直接全选 add，看 secret.key 混进暂存区——这就是「密钥入库」事故的微缩模型；勾上后再试，ignore 名单里的文件 add 不动。提交点数严格等于 commit 次数，领先/一致与远程实时对账。</div>
   </div>
-
-  <div class="note"><b>玩出味道的要点：</b>先不勾 .gitignore 直接 <code>git add .</code>，看 secret.key 混上船——这就是「密钥入库」事故的微缩模型。再勾上它重试，会发现 ignore 名单里的货根本搬不动。在 commit 之前多看一眼 <code>git status</code>，永远不亏。</div>
 </section>
 
-<div class="meridian"><span>· · · 航段 3 · · ·</span></div>
+<div class="meridian"><span>· 第三章 完 ·</span></div>
 
-<!-- ================= 第 4 港 ================= -->
+<!-- ================= 第四章 ================= -->
 <section class="chapter" id="ch4">
-  <div class="ch-head"><span class="ch-no">第 4 港</span><h2>双港记：一条船，两个港</h2></div>
-  <p class="ch-lead">把同一个仓库推到两座港口，听起来奢侈，其实是最低成本的保险：GitHub 那份给别人看，Gitee 那份给自己留后路。哪天一家抽风，另一家随时接管。</p>
+  <div class="ch-head"><span class="ch-no">04 · 第四章</span><h2>双仓：一条 remote，两台服务器</h2></div>
+  <p class="ch-lead">把同一个仓库推到两台服务器，是最便宜的异地容灾：GitHub 那份给别人看，Gitee 那份保下限。做法有懒与勤两种，坑也各有一个。</p>
 
-  <h3><span class="h3n">⚓ 4.1</span>偷懒方案：Gitee 一键导入</h3>
-  <p>Gitee 新建仓库页有一把「<b>导入已有仓库</b>」的钥匙：填入 GitHub 仓库地址，它会连提交历史一起搬过来，之后仓库页上还有「强制同步」按钮，点一下就从 GitHub 拉齐一次。适合「本地为主、偶尔备份」的节奏——只是它不会自动同步，忘点是常态。</p>
+  <h3><span class="h3n">⚓ 4.1</span>懒办法：Gitee 导入仓库</h3>
+  <p>Gitee 新建仓库页有「导入已有仓库」：填入 GitHub 仓库地址，它连提交历史一起搬过来；仓库页上有「强制同步」按钮，点一下从 GitHub 拉齐一次。适合「本地为主、偶尔备份」——但它<b>不会自动同步</b>，忘点是常态。</p>
 
-  <h3><span class="h3n">⚓ 4.2</span>正经方案：一条 remote，两条推送航线</h3>
-  <p>更顺手的是让 <code>git push</code> 一次推两港。给 origin 追加一条推送地址：</p>
+  <h3><span class="h3n">⚓ 4.2</span>勤办法：给 origin 挂两条 push 地址</h3>
   <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash</span></div><pre><span class="p">$</span> git remote set-url --add --push origin git@github.com:you/repo.git
 <span class="p">$</span> git remote set-url --add --push origin git@gitee.com:you/repo.git
 <span class="p">$</span> git remote -v
 origin  git@github.com:you/repo.git (fetch)
 origin  git@github.com:you/repo.git (push)
-origin  git@gitee.com:you/repo.git (push)      <span class="c"># ← 一次 push，两港靠泊</span></pre></div>
-  <p>两个细节记牢：<b>其一</b>，一旦追加过 push 地址，fetch 就只认第一个 URL——想从 Gitee 拉，另开一条：<code>git remote add gitee git@gitee.com:you/repo.git</code>，平时 <code>git fetch gitee</code>。<b>其二</b>，双推是「镜像」不是「同步」——两个港的历史永远来自同一条船，<b>别在两台机器上各推一港</b>，否则历史分叉，比单港还乱。团队协作出多台机器时，先想清楚哪边是主港。</p>
+origin  git@gitee.com:you/repo.git (push)      <span class="c"># ← 一次 push，逐条推送</span></pre></div>
+  <p>两个必须说透的细节。<b>其一</b>：一旦手动追加过 push 地址，fetch 就只认第一个 URL——想从 Gitee 拉，另开一条 <code>git remote add gitee git@gitee.com:you/repo.git</code>，平时 <code>git fetch gitee</code>。<b>其二</b>：多条 push 地址是<b>串行执行</b>的——第一条（GitHub）卡 20 秒超时，第二条（Gitee）也得干等；任何一条失败，这条 push 命令整体报错。所以「断网时双推还能救 Gitee」是错觉——要推 Gitee，就单独 <code>git push gitee main</code>。互动 03 的断网开关，复现的就是这件事。</p>
+
+  <h3><span class="h3n">⚓ 4.3</span>经典追问：双仓会自动同步吗？</h3>
+  <p>不会。push 是人发起的动作，Gitee 导入仓的「强制同步」也是按钮不是定时器。真要自动，办法有两个：GitHub Actions 里跑一个镜像工作流（每次 push 到 main 后追加推送到 Gitee，用 secrets 存密钥），或者干脆维持「本地一次 push、两台服务器各收一份」的手动纪律。个人项目用后者足够——<b>自动化的复杂度应该买在刀刃上</b>。</p>
+  <p>还要立一条纪律：<b>两台服务器永远来自同一台本机的历史</b>。两台机器各推一台服务器，两边历史就分叉了——remote 各看各的，谁也合并不了谁，得手动对账。多机器协作时，先定哪台是主服务器。</p>
 
   <div class="walk">
     <span class="w-tag">🧭 真实走查 · 二</span>
-    <div class="w-title">machine-skill-cg125 的双仓 .git/config</div>
-    <p>本机一个图形仓库就是这么双修的——GitHub 公开、Gitee 备份，<code>.git/config</code> 里如实记录着这条双航线：</p>
+    <div class="w-title">一个双仓仓库的 .git/config 原文</div>
+    <p>本机一个图形仓库的实盘配置——GitHub 公开、Gitee 备份，两条 pushurl 并列：</p>
     <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">.git/config（节选）</span></div><pre>[remote "origin"]
     url = git@github.com:starrysea1412/machine-skill-cg125.git
     fetch = +refs/heads/*:refs/remotes/origin/*
     pushurl = git@github.com:starrysea1412/machine-skill-cg125.git
     pushurl = git@gitee.com:starrysea1412/machine-skill-cg125.git</pre></div>
-    <p>push 一次，两港各收一份；release 大附件走 GitHub，国内读者 clone 走 Gitee。这份 config 就是第 4 港的全部秘密。</p>
+    <p>push 一次两台各收一份；release 大附件走 GitHub，国内读者 clone 走 Gitee。第四章的全部知识就是这几行 config。</p>
   </div>
 
   <div class="demo" id="d3">
-    <div class="demo-head"><span class="demo-tag">小样 3</span><span class="demo-title">双港调度台 · 起雾的下午</span><span class="demo-hint">先双推一次，再开雾，体会为什么留个备份</span></div>
+    <div class="demo-head"><span class="demo-tag">互动 03</span><span class="demo-title">双仓调度台 · 断网的下午</span><span class="demo-hint">先双推一次，再开断网开关单推 GitHub</span></div>
     <div class="demo-body">
       <div class="btn-row" style="margin-bottom:14px">
         <button class="btn primary" id="d3-push-gh">push → GitHub</button>
         <button class="btn primary" id="d3-push-ge">push → Gitee</button>
-        <button class="btn" id="d3-push-all">一键双推（两条 pushurl）</button>
-        <button class="btn" id="d3-fetch">fetch 双拉</button>
-        <label class="toggle"><input type="checkbox" id="d3-fog"><span class="tk"></span>☁️ 给 GitHub 航线起雾</label>
+        <button class="btn" id="d3-push-all">双推（两条 pushurl）</button>
+        <button class="btn" id="d3-fetch">fetch 对账</button>
+        <label class="toggle"><input type="checkbox" id="d3-fog"><span class="tk"></span>🔌 模拟 GitHub 断网</label>
         <button class="btn ghost" id="d3-reset">复位</button>
       </div>
       <div class="d3-sea" id="d3-sea">
         <div class="d3-row">
-          <div class="d3-boat" id="d3-boat"><span class="hull">🛶</span><span class="nm">本机 · 领先 0</span></div>
-          <div class="d3-island" id="d3-gh"><div class="flag">GitHub 港</div><div class="host">github.com</div><div class="d2-dots" id="d3-gh-dots"></div><div class="d3-st" id="d3-gh-st">·</div></div>
-          <div class="d3-island" id="d3-ge"><div class="flag">Gitee 港</div><div class="host">gitee.com</div><div class="d2-dots" id="d3-ge-dots"></div><div class="d3-st" id="d3-ge-st">·</div></div>
+          <div class="d3-boat" id="d3-boat"><span class="hull">🖥️</span><span class="nm">本机 · 领先 0</span></div>
+          <div class="d3-island" id="d3-gh"><div class="flag">GitHub</div><div class="host">github.com</div><div class="d2-dots" id="d3-gh-dots"></div><div class="d3-st" id="d3-gh-st">·</div></div>
+          <div class="d3-island" id="d3-ge"><div class="flag">Gitee</div><div class="host">gitee.com</div><div class="d2-dots" id="d3-ge-dots"></div><div class="d3-st" id="d3-ge-st">·</div></div>
         </div>
       </div>
-      <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">调度日志</span></div><pre id="d3-term"><span class="c"># 在本机攒三个提交，然后分别试试单推和双推；雾中推 GitHub 会超时</span></pre></div>
+      <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">调度日志</span></div><pre id="d3-term"><span class="c"># 本机攒三个提交：单推、双推各试一次；断网时 GitHub 会超时</span></pre></div>
       <div class="term" style="margin-top:-6px"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">.git/config · remote "origin"</span></div><pre id="d3-cfg">[remote "origin"]
     url = git@github.com:you/repo.git</pre></div>
     </div>
+    <div class="demo-foot">确定性模拟：断网开关让 GitHub 推送在 1.7 秒后超时报 fatal，Gitee 不受影响——注意双推是串行的，GitHub 卡住时 Gitee 也要等；断网后单推 Gitee 才是正解。</div>
   </div>
 </section>
 
-<div class="meridian"><span>· · · 航段 4 · · ·</span></div>
+<div class="meridian"><span>· 第四章 完 ·</span></div>
 
-<!-- ================= 第 5 港 ================= -->
+<!-- ================= 第五章 ================= -->
 <section class="chapter" id="ch5">
-  <div class="ch-head"><span class="ch-no">第 5 港</span><h2>风浪与灯塔：断网、超时与自救</h2></div>
-  <p class="ch-lead">在国内用 GitHub，push 卡死不是事故，是天气。<code>Failed to connect to github.com port 443: Timed out</code> 这种报错，每个双仓水手都背得出来。这一港不抱怨天气，只发救生衣。</p>
+  <div class="ch-head"><span class="ch-no">05 · 第五章</span><h2>断网：超时、代理、镜像与 API 兜底</h2></div>
+  <p class="ch-lead">在国内推 GitHub，<code>Failed to connect to github.com port 443: Timed out</code> 不是事故，是天气。这一章不抱怨天气，只发救生装备——但装备要按顺序用，先隔离变量，再对症下药。</p>
 
-  <h3><span class="h3n">⚓ 5.1</span>先分清：是墙，还是自己船漏了</h3>
-  <p>排查的第一步永远是<b>把变量隔离开</b>：</p>
+  <h3><span class="h3n">⚓ 5.1</span>第一步永远是隔离变量</h3>
+  <p>排查不是玄学，是把问题切成两半：</p>
   <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash</span></div><pre><span class="p">$</span> curl -I --max-time 8 https://github.com        <span class="c"># 通 → 大概率不是墙，查代理配置</span>
-<span class="p">$</span> curl -I --max-time 8 https://gitee.com         <span class="c"># 通 → 你本机没问题，就是 GitHub 航线的事</span></pre></div>
-  <p>若 Gitee 通而 GitHub 超时，本机无罪，按下面的药箱顺序抓药。</p>
+<span class="p">$</span> curl -I --max-time 8 https://gitee.com         <span class="c"># 通 → 本机无罪，是 GitHub 航路的事</span></pre></div>
+  <p>三个结论三条路：两个都通 → 问题在你自己的 git 配置（多半是代理残留）；GitHub 不通、Gitee 通 → 本机网络无罪，按下面的药箱顺序来；两个都不通 → 先修自己的网。</p>
 
-  <h3><span class="h3n">⚓ 5.2</span>救生衣四件</h3>
-  <p><b>① 代理。</b>本机挂着代理（比如 <code>127.0.0.1:7890</code>）时，git 不一定自己会用它——要显式交代：</p>
+  <h3><span class="h3n">⚓ 5.2</span>代理是双向坑</h3>
+  <p>本机挂着代理（比如 <code>127.0.0.1:7890</code>）时，git 不会自己用——要显式交代，而且建议用 <code>socks5h</code> 而不是 <code>socks5</code>：多个 <code>h</code> 表示<b>域名解析也交给代理做</b>，绕开本地 DNS 污染：</p>
   <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">git-bash</span></div><pre><span class="p">$</span> git config --global http.proxy socks5h://127.0.0.1:7890
-<span class="p">$</span> git config --global --unset http.proxy          <span class="c"># 代理软件一关，记得撤掉，不然-fetch 也会卡死</span></pre></div>
-  <p>最坑的是反过来：代理软件已经关了，<b>全局配置里的代理却没撤</b>，git 还在虔诚地敲一扇不存在的门——表现为所有 fetch/push 卡死几十秒后超时。这两种病症状一样，病因相反，先看 <code>git config --global --get http.proxy</code> 再下药。</p>
-  <p><b>② 镜像加速。</b>对 release 附件、raw 文件的下载，社区反代是特效药——在原链接前加前缀：<code>https://ghfast.top/https://github.com/...</code>。但公共镜像像浮标，会漂也会沉：曾经满海的 <code>ghproxy.com</code>、<code>ghp.ci</code> 都已经阵亡。别把它们写死进脚本，当成人肉可换的消耗品。clone 整仓它们帮不上，老老实实走代理或镜像仓库。</p>
-  <p><b>③ SSH 走 443。</b>第 2 港那纸 <code>~/.ssh/config</code>，在 22 端口被封的网络里就是通行证。</p>
-  <p><b>④ 终极兜底：Git Data API。</b>只要 HTTPS API 还能通（它走的路径和网页相同），就能把文件直接「空投」进仓库——不走 git 协议。它是五步：建 blob（文件内容）→ 建 tree（目录结构）→ 建 commit（把 tree 钉进历史）→ 把分支 ref 指向新 commit → 完事。第 5 走查里逐层拆给你看。</p>
+<span class="p">$</span> git config --global --unset http.proxy          <span class="c"># 代理软件一关就摘掉</span></pre></div>
+  <p>反过来是更常见的病：<b>代理软件已经关了，全局配置里的代理却没摘</b>，git 还在虔诚地敲一扇不存在的门——表现为一切 fetch/push 卡几十秒后超时。诊法就藏在报错里：看到 <code>Failed to connect to <b>127.0.0.1</b> port 7890</code>，就是 git 在找本地代理。本手册发布当晚就撞上一次，解法不改全局配置，单次覆盖：</p>
+  <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">当晚的真实命令</span></div><pre><span class="err">fatal: unable to access 'https://github.com/.../': Failed to connect to 127.0.0.1 port 7890</span>
+<span class="p">$</span> git -c http.proxy= -c https.proxy= push -u origin main   <span class="c"># 本次推送绕过代理，一次通过</span></pre></div>
 
-  <div class="walk">
-    <span class="w-tag">🧭 真实走查 · 三</span>
-    <div class="w-title">push 被墙的那一夜：Git Data API 五步空投</div>
-    <p>某晚《你按下回车之后》要更新线上版本，push 死活超时（<code>curl 56 Recv failure</code>），代理也不在。当晚的绕航路线——用 GitHub REST API 把改动的文件直接写进仓库：</p>
-    <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">五步空投 · curl 逐一发射</span></div><pre><span class="c"># ① 建三份 blob（新文件的 base64 内容）</span>
+  <h3><span class="h3n">⚓ 5.3</span>镜像加速与它的保质期</h3>
+  <p>对 release 附件、raw 文件的下载，社区反代是特效药——在原链接前加前缀：<code>https://ghfast.top/https://github.com/...</code>。但公共镜像有保质期：曾经满地的 <code>ghproxy.com</code>、<code>ghp.ci</code> 都已阵亡，活着的节点也常对大仓库 clone 半路断流。<b>别把镜像写死进脚本</b>，当成人肉可换的消耗品；真要稳定，用自建反代（开源项目 <code>hunshcn/gh-proxy</code> 可部署到 Cloudflare Workers）。</p>
+
+  <h3><span class="h3n">⚓ 5.4</span>终极兜底：Git Data API 五步空投</h3>
+  <p>HTTP API 与 git 的智能协议走的是不同端点，墙对它们的待遇可能不同——当晚 <code>github.com</code> 的 git 端点死了，<code>api.github.com</code> 却活着。只要 API 可达，就能把文件直接写进仓库，不走 git 协议。五步：</p>
+  <div class="term"><div class="term-head"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="tt">REST API · 逐一发射</span></div><pre><span class="c"># ① 建三份 blob（文件内容的 base64）</span>
 POST /repos/:owner/:repo/git/blobs   {"content":"…","encoding":"base64"} → 得 3 个 sha
-<span class="c"># ② 取旧 tree，替换其中 3 个条目</span>
+<span class="c"># ② 取旧 tree，替换其中 3 个条目，建新 tree</span>
 GET  /repos/:owner/:repo/git/trees/main?recursive=1
 POST /repos/:owner/:repo/git/trees   {"base_tree":…,"tree":[{新 path+sha}…]}
-<span class="c"># ③ 建 commit，指向新 tree 和旧 commit</span>
-POST /repos/:owner/:repo/git/commits {"message":"v3.5 via API","tree":…,"parents":[旧 sha]}
+<span class="c"># ③ 建 commit：指向新 tree，父提交是旧 commit</span>
+POST /repos/:owner/:repo/git/commits {"message":"…","tree":…,"parents":[旧 sha]}
 <span class="c"># ④ 把 main 指向新 commit —— 效果等同 push</span>
 PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
 <span class="c"># ⑤ 网页刷新 —— Pages 自动重建，线上已更新</span></pre></div>
-    <p>两个当晚踩过的坑，比五步本身更值钱：<b>curl 的 JSON 里带中文时必须写成文件再 <code>-d @body.json</code></b>——命令行内联中文经 Windows shell 转码就烂；token 用请求头 <code>Authorization: Bearer &lt;token&gt;</code>，别塞进 URL。这套五步在无人机自动发版场景里同样能打，不只是救急。</p>
+  <div class="walk">
+    <span class="w-tag">🧭 真实走查 · 三</span>
+    <div class="w-title">比五步本身更值钱的两个坑</div>
+    <p>当晚五步一次走通，倒是在细节上翻了两跤，都值得记进手册：<b>其一</b>，curl 的 JSON 带中文时必须写成文件再 <code>-d @body.json</code>——命令行内联中文经 Windows shell 转码就烂，报错还看不出是编码问题；<b>其二</b>，token 放请求头 <code>Authorization: Bearer &lt;token&gt;</code>，别拼进 URL——URL 会进 shell 历史和服务器日志。这套五步在自动发版场景同样能打，不只是救急。</p>
   </div>
 
-  <h3><span class="h3n">⚓ 5.3</span>灯塔：先看官方是不是着火了</h3>
-  <p>还有一类「连不上」根本不是你的问题：GitHub 自己故障。<b>发布前一切失败，先花十秒开 <a href="https://www.githubstatus.com" target="_blank" rel="noopener">githubstatus.com</a></b>——某次发布撞上 Pages 官方事件，排查了半天自己的仓库，最后发现是灯塔自己着火了。看一眼状态页，能省下一小时怀疑人生。</p>
+  <h3><span class="h3n">⚓ 5.5</span>先看官方是不是着火了</h3>
+  <p>还有一类「连不上」根本不是你的问题：平台自己故障。<b>发布前一切失败，先花十秒开 <a href="https://www.githubstatus.com" target="_blank" rel="noopener">githubstatus.com</a></b>——某次发布撞上 Pages 官方事件，排查了半天自己的仓库，最后发现是灯塔自己着火了。看一眼状态页，省一小时怀疑人生。</p>
 
   <div class="demo" id="d4">
-    <div class="demo-head"><span class="demo-tag">小样 4</span><span class="demo-title">灯塔决策树 · 选一个症状，跟着排查走</span><span class="demo-hint">四种最常见的风浪</span></div>
+    <div class="demo-head"><span class="demo-tag">互动 04</span><span class="demo-title">排障决策树 · 四种最常见报错的排查路径</span><span class="demo-hint">选一个症状，跟着走</span></div>
     <div class="demo-body">
       <div class="d4-pick" id="d4-pick"></div>
       <div class="d4-flow" id="d4-flow"></div>
     </div>
+    <div class="demo-foot">报错原文取自真实终端。每一步都先给出「看什么」，再给出「怎么办」——顺序本身就是方法论：隔离变量 → 读报错 → 最小改动。</div>
   </div>
 </section>
 
-<div class="meridian"><span>· · · 航段 5 · · ·</span></div>
+<div class="meridian"><span>· 第五章 完 ·</span></div>
 
-<!-- ================= 第 6 港 ================= -->
+<!-- ================= 第六章 ================= -->
 <section class="chapter" id="ch6">
-  <div class="ch-head"><span class="ch-no">第 6 港</span><h2>把家开成店面：Pages 发布</h2></div>
-  <p class="ch-lead">仓库不只是货架，还能直接变成店面。GitHub Pages 把仓库里的静态文件发布成网站——你此刻读的这篇文章，就是住在 <code>github.io</code> 上的。</p>
+  <div class="ch-head"><span class="ch-no">06 · 第六章</span><h2>发布：GitHub Pages 与它的规矩</h2></div>
+  <p class="ch-lead">仓库不只是货架，还能直接变成网站。GitHub Pages 把仓库里的静态文件发布成 <code>github.io</code> 上的正式页面——你此刻读的这篇手册，就住在那里。</p>
 
-  <h3><span class="h3n">⚓ 6.1</span>三步开张</h3>
-  <p>仓库 <code>Settings → Pages</code>，选一个发布源，保存。三个选项对应三种摆法：</p>
-  <p><b>main 分支 / 根目录</b>——最常见，仓库根就是网站根，适合文章站、文档站；<b>main 分支 / docs 目录</b>——代码和网页分家，<code>docs/</code> 才是店面；<b>gh-pages 分支</b>——给构建产物住的单间，Actions 构建完把成品推到这条分支，源码和成品各安各的。保存后一两分钟，<code>https://你的名.github.io/仓库名/</code> 就挂出灯了。</p>
-  <p>三个免费规矩要背下来：只服务<b>静态文件</b>（没有后端，接口自己去别处搭）；仓库超过 <b>1GB</b> 或站点带宽超限会被限流；正式项目记得在页面上留 <code>noindex</code> 之外的家底——LICENSE 和 README。</p>
+  <h3><span class="h3n">⚓ 6.1</span>三种发布源，三种摆法</h3>
+  <p>仓库 <code>Settings → Pages</code> 选发布源，保存后一两分钟，<code>https://你的名.github.io/仓库名/</code> 就挂灯了。三个选项对应三种摆法：<b>main / 根目录</b>——仓库根就是网站根，文章站、文档站最常用；<b>main / docs 目录</b>——代码和网页分家，<code>docs/</code> 才是店面；<b>gh-pages 分支</b>——给构建产物住的单间，Actions 构建完把成品推到这条分支，源码与成品各安各的。</p>
+  <p>两个容易被忽略的机制：<b>其一</b>，Pages 默认会对站点跑一遍 Jekyll 处理，以下划线开头的文件会被吞——纯静态站放一个空的 <code>.nojekyll</code> 文件跳过它；<b>其二</b>，项目站发布在 <code>/仓库名/</code> 子路径下，资源引用要用相对路径，写死了绝对路径的 CSS/JS 在本地能跑、线上 404。</p>
+  <p>免费额度是软限但要知道：站点 1GB、月带宽 100GB、每小时构建 10 次。正规文档站都远摸不到；被限流了再考虑加 CDN。</p>
 
   <div class="demo" id="d5">
-    <div class="demo-head"><span class="demo-tag">小样 5</span><span class="demo-title">发布线 · 别在船还没靠稳时挂招牌</span><span class="demo-hint">亲手复现 gh-pages 半成品 404</span></div>
+    <div class="demo-head"><span class="demo-tag">互动 05</span><span class="demo-title">发布流水线 · 别在传输没走完时开 Pages</span><span class="demo-hint">先抢跑一次，看 404 怎么发生</span></div>
     <div class="demo-body">
       <div class="d5-line">
         <div class="d5-st" id="d5-s1"><span class="ic">📦</span><div class="t">本地<br>index.html</div><span class="led"></span></div>
@@ -340,82 +378,82 @@ PATCH /repos/:owner/:repo/git/refs/heads/main {"sha":新 commit}
       </div>
       <div class="d5-url" id="d5-url">https://starrysea1412.github.io/git-primer/</div>
       <div class="d5-page" id="d5-page"><div class="bar" id="d5-page-bar">— 还没发布</div><div class="view" id="d5-page-view">· · ·</div></div>
-      <div class="d5-gitee"><span class="rip">⚓</span><div class="tx"><b>Gitee Pages 悼念栏：</b>2024 年 5 月起暂停服务，官方其后确认「由于不可抗原因已下线，暂无上线计划」。想在 Gitee 上开店面的话，此路不通——国内静态托管可看腾讯云 EdgeOne Pages 等，或者就让 GitHub Pages 当唯一的门面。</div></div>
+      <div class="d5-gitee"><span class="rip">⚓</span><div class="tx"><b>Gitee Pages 备忘：</b>2024 年 5 月起暂停服务，官方其后确认「由于不可抗原因已下线，暂无上线计划」。想在 Gitee 上开店面的话此路不通——国内静态托管可看腾讯云 EdgeOne Pages 等，或者就让 GitHub Pages 当唯一的门面。</div></div>
     </div>
+    <div class="demo-foot">确定性模拟：push 进行中就开 Pages，构建抢跑拿到半成品，线上 404；等传输彻底结束再重试，构建拿到完整产物才转绿。这口坑下方的走查四里有真实版本。</div>
   </div>
 
   <div class="walk">
     <span class="w-tag">🧭 真实走查 · 四</span>
     <div class="w-title">gh-pages 半成品：404 的两种打开方式</div>
-    <p>某次发布一个多页站点，push 还在进行中就顺手点了开启 Pages，构建抢跑，成品缺了一半——线上首页 404。排障半小时，结论只有两行：<b>先确认 push 彻底完成（对象计数、远端进度都走完），再开 Pages；开了之后等构建状态变绿</b>（仓库 Actions 页能看到那次 Pages build 的日志），刷新才有意义。</p>
-    <p>加上走查三末尾那条——先查 <a href="https://www.githubstatus.com" target="_blank" rel="noopener">githubstatus.com</a>——发布失败的排查顺序就齐了：<b>状态页 → push 是否完成 → 构建是否绿 → 缓存（强刷 Ctrl+F5）</b>。四步走完还不好，再来怀疑人生。</p>
+    <p>某次发布一个多页站点，push 还在进行中就顺手点了开启 Pages，构建抢跑、成品缺了一半——线上首页 404。排障半小时，结论两行：<b>先确认 push 彻底完成（对象计数 100%、无半途断点），再开 Pages；开了之后等构建变绿</b>（仓库 Actions 页能看到 "pages build and deployment" 那次运行的日志），刷新才有意义。</p>
+    <p>加上走查之外的灯塔——先查 <a href="https://www.githubstatus.com" target="_blank" rel="noopener">githubstatus.com</a>——发布失败的排查顺序就齐了：<b>官方状态页 → push 是否完成 → 构建是否绿 → 强刷缓存（Ctrl+F5）</b>。四步走完还不好，再开始怀疑人生。</p>
   </div>
 </section>
 
-<div class="meridian"><span>· · · 航段 6 · · ·</span></div>
+<div class="meridian"><span>· 第六章 完 ·</span></div>
 
-<!-- ================= 第 7 港 ================= -->
+<!-- ================= 第七章 ================= -->
 <section class="chapter" id="ch7">
-  <div class="ch-head"><span class="ch-no">第 7 港</span><h2>信号旗与瞭望台：协作的规矩</h2></div>
-  <p class="ch-lead">一个人用仓库，像自言自语地航海；一旦有第二个人上船，就需要信号旗语——Issue 说事，分支干活，Pull Request 合流。</p>
+  <div class="ch-head"><span class="ch-no">07 · 第七章</span><h2>协作：Issue、分支、PR 与五人的边界</h2></div>
+  <p class="ch-lead">一个人用仓库是自言自语；第二个人上船，就需要旗语——Issue 说事，分支干活，Pull Request 合流。</p>
 
   <h3><span class="h3n">⚓ 7.1</span>Issue：把「不对劲」说成「能修的事」</h3>
-  <p>好的 Issue 不是「坏了！」，而是三段论：<b>怎么操作</b>（复现步骤）、<b>期望什么</b>、<b>实际发生什么</b>。附上版本号、截图、报错原文。写得好的 Issue 一半是修好了的——因为它逼提的人把变量隔离清楚，而看的人直接拿到起点。</p>
+  <p>好的 Issue 不是「坏了！」，是三段论：<b>怎么操作</b>（复现步骤，编号列出）、<b>期望什么</b>、<b>实际发生什么</b>，附上版本号、截图、报错原文。写得好的 Issue 一半是修好了的——它逼提的人把变量隔离清楚，看的人直接拿到起点。自己给自己提 Issue 也有价值：待办从脑子里搬进仓库，带着上下文躺在代码旁边。</p>
 
   <h3><span class="h3n">⚓ 7.2</span>分支与 PR：主干永远能跑</h3>
-  <p>团队协作的默认节奏：主干 <code>main</code> 永远保持可用；任何改动开一条短命分支（<code>feat/hud-console</code>、<code>fix/login-timeout</code>），改完发 Pull Request（Gitee 里叫 PR，GitLab 叫 MR，说的是同一件事）——「请求把这条分支并回主干」。合并前有人看一眼（review），有机器人跑一遍测试，绿了才合。个人项目同样值得这么做：<b>PR 是给自己的一次慢下来的机会</b>，改动在分支上摆开，比在主干上裸奔体面得多。</p>
-  <p>贡献别人的项目则是 fork 流：把仓库 fork 到自己名下 → clone 自己那份 → 开分支修 → 推回自己名下 → 向原仓库发 PR。你的改动通过审核后，就永远留在了那艘大船的航海日志里。</p>
+  <p>团队节奏的默认值：主干 <code>main</code> 永远可用；任何改动开一条短命分支（<code>feat/hud-console</code>、<code>fix/login-timeout</code>），改完发 Pull Request（GitLab 叫 MR，GitLab 之外都叫 PR，是同一件事）——「请求把这条分支并回主干」。合并前有人看一眼（review），CI 跑一遍测试，绿了才合。<b>经典追问：fork 和 clone 差在哪？</b>clone 是把仓库复制到本地，归属不变；fork 是<b>在服务端复制一份到你名下</b>——你拥有这份拷贝的写权限，改完向原仓库发 PR。给别人的项目贡献代码，走 fork 流；在公司仓库里干活，直接开分支（你有那台仓库的权限）。</p>
+  <p>给开源项目提 PR 的礼数：先读 CONTRIBUTING.md（没有就照着最近合并的 PR 依样画葫芦），一个 PR 只做一件事，改动说明里贴 before/after。公开仓库可以免费配分支保护（要求 review、要求 CI 通过才能合）——给主干上的 <code>main</code> 上一道闸。</p>
 
-  <h3><span class="h3n">⚓ 7.3</span>开源还是私有：一张牌桌</h3>
+  <h3><span class="h3n">⚓ 7.3</span>开源还是私有</h3>
   <div class="tbl-wrap"><table class="tbl">
     <thead><tr><th></th><th>开源仓库</th><th>私有仓库</th></tr></thead>
     <tbody>
-      <tr><td>GitHub</td><td class="good">无限公开，社区、star、PR 随便来</td><td>免费无限量，协作者不限，Actions 限时</td></tr>
-      <tr><td>Gitee</td><td>免费，但需实名 + 人工审核后才公开</td><td>免费 1000 个，协作 ≤ 5 人，单仓 500MB</td></tr>
+      <tr><td>GitHub</td><td class="good">无限公开，社区、star、PR 随便来</td><td>免费不限量，协作者不限，Actions 计时</td></tr>
+      <tr><td>Gitee</td><td>免费，但实名 + 人工审核后才公开</td><td>免费 1000 个，协作合计 ≤5 人，单仓 500MB</td></tr>
       <tr><td>适合</td><td>门面、作品集、给世界的礼物</td><td>日记、业务代码、还没长好的想法</td></tr>
     </tbody>
   </table></div>
-  <p>决定开源时，补两块板：<b>LICENSE</b>（不写许可证＝「保留所有权利」，别人 fork 都不敢；MIT 最宽松，Apache-2.0 带专利条款，都是一字不改贴进去）和 <b>README</b>（首页即门面：一句话是什么、截图/在线地址、三行上手）。私有仓库里也请放 README——三个月后的你就是第一位读者。</p>
-  <div class="note"><b>人数的边界：</b>Gitee 免费私有仓协作人数是<b>账号下所有私有仓总共 5 人</b>，超了要删人或升级。小团队够用；到了第七个人，要么上 GitHub（免费私有仓不限协作者），要么升 Gitee 企业版。这不是谁好谁坏，是牌桌上明码标价的筹码。</div>
+  <p>决定开源时补两块板：<b>LICENSE</b>——不写许可证等于「保留所有权利」，别人连 fork 都不敢；MIT 最宽松，Apache-2.0 带专利条款，都只需原样贴进文件。 <b>README</b>——首页即门面：一句话是什么、截图或在线地址、三行上手。私有仓库也请放 README——三个月后的你就是第一位读者。</p>
+  <div class="note"><b>人数的边界：</b>Gitee 免费私有仓的协作名额是<b>账号下所有私有仓合计 5 人</b>，超了要删人或升级企业版。这不是谁好谁坏——GitHub 免费私有仓不限协作者但 Actions 计时，Gitee 限 5 人但直连稳定。牌桌上明码标价，按需取用。</div>
 </section>
 
-<div class="meridian"><span>· · · 航段 7 · · ·</span></div>
+<div class="meridian"><span>· 第七章 完 ·</span></div>
 
-<!-- ================= 速查表 ================= -->
+<!-- ================= 速查卡 ================= -->
 <section class="chapter" id="cheat">
-  <div class="ch-head"><span class="ch-no">附录</span><h2>航海速查表</h2></div>
-  <p class="ch-lead">贴在手边的那一页。每条都是前面七个航段的浓缩。</p>
-  <div class="cheat"><div class="tbl-wrap"><table class="tbl">
-    <thead><tr><th>想做的事</th><th>动作</th></tr></thead>
-    <tbody>
-      <tr><td>新仓库首推</td><td><code>git init</code> → <code>git add .</code> → <code>git commit -m "…"</code> → <code>git push -u origin main</code></td></tr>
-      <tr><td>追加第二推送航线（双仓）</td><td><code>git remote set-url --add --push origin git@gitee.com:you/repo.git</code></td></tr>
-      <tr><td>HTTPS 改 SSH</td><td><code>git remote set-url origin git@github.com:you/repo.git</code></td></tr>
-      <tr><td>验证 SSH 船票</td><td><code>ssh -T git@github.com</code>（Gitee 同理）</td></tr>
-      <tr><td>SSH 被墙走 443</td><td><code>~/.ssh/config</code>：HostName ssh.github.com · Port 443</td></tr>
-      <tr><td>给 git 挂代理 / 摘代理</td><td><code>git config --global http.proxy socks5h://127.0.0.1:7890</code> / <code>--unset http.proxy</code></td></tr>
-      <tr><td>下载 release / raw 提速</td><td>链接前加镜像前缀（ghfast.top 等，会漂，别写死）</td></tr>
-      <tr><td>push 全死时的兜底</td><td>Git Data API 五步：blobs → trees → commits → patch ref（见第 5 港走查）</td></tr>
-      <tr><td>开静态站点</td><td>Settings → Pages → main / 根目录 → 等构建变绿</td></tr>
-      <tr><td>发布失败排查顺序</td><td>githubstatus.com → push 是否完成 → 构建是否绿 → 强刷缓存</td></tr>
-    </tbody>
-  </table></div></div>
+  <div class="ch-head"><span class="ch-no">附录</span><h2>速查卡：如果只带走十句</h2></div>
+  <p class="ch-lead">贴在手边的那一页。每句都是前面七章的浓缩，展开版见各章。</p>
+  <div class="card" style="padding:8px 26px">
+    <div style="display:grid;grid-template-columns:1fr;gap:2px;font-size:16px;line-height:1.9">
+      <div><b style="color:var(--orange)">①</b> 密码推不了代码——命令行只认令牌（HTTPS）或密钥对（SSH），GitHub 2021 年 8 月就关了密码通道。</div>
+      <div><b style="color:var(--orange)">②</b> HTTPS 交给凭据管理器，SSH 私钥不出门——二选一都能走通，22 端口被封就写 ~/.ssh/config 走 443。</div>
+      <div><b style="color:var(--orange)">③</b> add 是装箱单，commit 是快照，push 才出门——三区别混，一次提交说清一件事。</div>
+      <div><b style="color:var(--orange)">④</b> .gitignore 只防新文件——已入库的要先 <code>git rm --cached</code>，顺序反了白写。</div>
+      <div><b style="color:var(--orange)">⑤</b> 双仓是给 origin 追加 pushurl——多条地址<b>串行执行</b>，一台断网会拖住整条命令；推 Gitee 就单独 push gitee。</div>
+      <div><b style="color:var(--orange)">⑥</b> fetch 只是把远端对象拉回来对账，pull 才会动你的工作区——先 fetch 后合并，永远比裸 pull 稳。</div>
+      <div><b style="color:var(--orange)">⑦</b> 报错先读最后一行，再隔离变量：同一个网 curl 两个域名，一秒分清「墙」和「自己」。</div>
+      <div><b style="color:var(--orange)">⑧</b> 代理是双向坑：没挂上会超时，忘摘掉也超时——报错里出现 127.0.0.1 就是后一种。</div>
+      <div><b style="color:var(--orange)">⑨</b> Pages 404 按序查四步：官方状态页 → push 完没 → 构建绿没 → 强刷缓存。</div>
+      <div><b style="color:var(--orange)">⑩</b> 重要数据 3 份、2 种介质、1 份异地——双仓就是成本最低的那份异地。</div>
+    </div>
+  </div>
 </section>
 
 <!-- ================= 尾声 ================= -->
 <section class="chapter finale">
-  <span class="beacon">🗼 灯塔常亮</span>
-  <h2>归航：<span class="l">三份副本，两种介质，一个港外</span></h2>
-  <p>数据安全的 3-2-1 法则：重要数据存 <b>3</b> 份，放 <b>2</b> 种介质，其中 <b>1</b> 份在异地。git 把这个法则拆成了最朴素的形态——本地仓库是一份，任何远程是第二份，双仓是第三份；磁盘是一种介质，云端是另一种；Gitee 或 GitHub，总有一个在「异地」。</p>
-  <p>这套指南本身也是航海日志的一部分：你现在读到的页面，住在一个双仓仓库里，刚刚完成它自己的第 14 次航线复用——add、commit、push，两港靠泊，Pages 挂灯。代码的家安好了，剩下的，是天天出航。</p>
+  <span class="beacon">· 完 ·</span>
+  <h2>收尾：<span class="l">三份副本，两种介质，一个异地</span></h2>
+  <p>数据安全的 3-2-1 法则：重要数据存 <b>3</b> 份，放 <b>2</b> 种介质，其中 <b>1</b> 份在异地。git 把这个法则拆成了最朴素的形态——本地仓库是一份，任何远程是第二份，双仓是第三份；磁盘是一种介质，云端是另一种；GitHub 与 Gitee，总有一个在「异地」。</p>
+  <p>这篇手册自己就住在刚才搭好的双仓仓库里：发布当晚它亲历了 7890 残代理卡 push（第五章的病，解法同款）、Pages 第一轮 404（走查四的坑）。代码的家安好了，剩下的，是天天提交。</p>
 </section>
 
 </main>
 
 <footer class="site">
-  <div class="line">把代码安个家 · GitHub 与 Gitee 双港使用指南</div>
-  <div class="line">七个航段 · 五枚小样 · 四次真实走查 · 零依赖单页</div>
-  <div class="line">StarrySea1412 / 2026 · 造物手记番外</div>
+  <div class="line">托管手册 · 把代码安个家（GitHub 与 Gitee）</div>
+  <div class="line">七章 · 五段互动 · 四次走查 · 单文件 · 零依赖</div>
+  <div class="line">交互确定性模拟 · 海图 / 2026 · StarrySea1412</div>
 </footer>
 
 <script src="assets/demo.js"></script>

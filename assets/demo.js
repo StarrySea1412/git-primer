@@ -239,12 +239,12 @@
         var fog = $("#d3-fog").checked && label === "GitHub";
         p.st.dataset.bad = "";
         p.el.classList.add("st-wait"); p.st.textContent = "连接中……"; p.st.style.color = "var(--gold)";
-        log('<span class="p">$</span> git push ' + label + (fog ? '   <span class="c"># ☁️ 雾区航线</span>' : ""));
+        log('<span class="p">$</span> git push ' + label + (fog ? '   <span class="c"># 断网航线</span>' : ""));
         wait(fog ? 1700 : 800).then(function () {
           if (fog) {
             p.st.dataset.bad = "1";
             log('<span class="err">  fatal: unable to access: Failed to connect port 443: Timed out</span>');
-            log('<span class="c">  —— 幸好另一个港还在。稍后雾散再补推。</span>');
+            log('<span class="c">  —— 幸好另一台服务器还在。网络恢复后再补推。</span>');
             paint(); resolve();
           } else {
             p.n = AHEAD; paint();
@@ -271,7 +271,7 @@
     });
     $("#d3-fog").addEventListener("change", function () {
       $("#d3-sea").classList.toggle("fog", this.checked);
-      if (this.checked) log('<span class="c"># ☁️ GitHub 航线进入雾区 —— 推送将超时。Gitee 不受影响。</span>');
+      if (this.checked) log('<span class="c"># 已模拟 GitHub 断网：推送将超时。Gitee 不受影响。</span>');
     });
     $("#d3-reset").addEventListener("click", function () {
       gh.n = ge.n = 0; gh.st.dataset.bad = ""; ge.st.dataset.bad = ""; dualPush = false;
@@ -288,14 +288,14 @@
       { ic: "⏳", t: "push 卡住 20 秒后超时", steps: [
         { q: "第 1 步 · 隔离变量", a: "先分清是「墙」还是本机问题：", cmd: "curl -I --max-time 8 https://github.com\ncurl -I --max-time 8 https://gitee.com   # 通 → 本机无罪" },
         { q: "第 2 步 · 查代理配置", a: "两种病症状一样、病因相反：代理没挂上，或代理软件关了配置还挂着。", cmd: "git config --global --get http.proxy" },
-        { q: "第 3 步 · 换航道", a: "22 端口被封时，SSH 走 443 备用航道；HTTPS 请求挂上代理重试。", cmd: '# ~/.ssh/config\nHost github.com\n  HostName ssh.github.com\n  Port 443\n  User git' }],
-        fin: "处方：挂/摘代理 → SSH 走 443 → 都不通就上 Git Data API 兜底（见本港走查三）。" },
+        { q: "第 3 步 · 换端口", a: "22 端口被封时，SSH 走 443 备用端口；HTTPS 请求挂上代理重试。", cmd: '# ~/.ssh/config\nHost github.com\n  HostName ssh.github.com\n  Port 443\n  User git' }],
+        fin: "处方：挂/摘代理 → SSH 走 443 → 都不通就上 Git Data API 兜底（见本章 5.4）。" },
       { ic: "🔒", t: "Authentication failed / 403", steps: [
         { q: "第 1 步 · 读报错", a: "GitHub 的密码通道 2021 年 8 月就关了——命令行要的是 Personal Access Token，不是账号密码。", cmd: "remote: Support for password authentication was removed.\nremote: Please use a personal access token instead." },
         { q: "第 2 步 · 查令牌三件事", a: "fine-grained 令牌要核对：① 是否勾选了「这个」仓库 ② Contents 权限给了读写没有 ③ 过期了没有。", cmd: "Settings → Developer settings → Fine-grained tokens" },
         { q: "第 3 步 · Gitee 直接换 SSH", a: "Gitee 私有仓在 HTTPS 通道上经常白耗时间，SSH 一次通过（见走查一）。", cmd: "git remote set-url origin git@gitee.com:you/repo.git" }],
         fin: "处方：GitHub 用 fine-grained 令牌 + 凭据管理器；Gitee 直接 SSH。令牌按仓库授权、设过期日。"},
-      { ic: "✂️", t: "clone 到一半断线", steps: [
+      { ic: "✂️", t: "clone 到一半断流", steps: [
         { q: "第 1 步 · 减负重试", a: "大仓库先浅克隆，只要最新一层，体积小一个量级：", cmd: "git clone --depth 1 https://github.com/you/big-repo.git" },
         { q: "第 2 步 · 大文件单独走镜像", a: "release 附件和 raw 文件加镜像前缀，比整仓拉取稳得多：", cmd: "https://ghfast.top/https://github.com/you/repo/releases/download/v1/x.zip" },
         { q: "第 3 步 · 换个出发点", a: "用 Gitee「导入仓库」把它搬一份，然后从 Gitee clone——国内全速。", cmd: "gitee.com → 新建仓库 → 导入已有仓库" }],
